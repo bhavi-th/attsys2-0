@@ -1,0 +1,15 @@
+.NavBar{
+  min-height: 40px;
+  height: 3.5rem;
+  background-color: #4849e8;
+  color: white;
+  display: flex;
+  align-items: center;
+  padding-inline: 1rem;
+}
+
+.nav-logo{
+  font-size: 1.5rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
