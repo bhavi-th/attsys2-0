@@ -1,0 +1,51 @@
+.background{
+  position: absolute;
+  z-index: 0;
+  background: white;
+  height: 100dvh;
+  width: 100dvw;
+}
+
+.LandingPage{
+  position:absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  height: 85dvh;
+  width: 90dvw;
+  background-color: var(--primary-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  flex-direction: column;
+  gap: 2.5rem;
+  border-radius: 1.5rem;
+  z-index: 1;
+}
+
+.LandingPage h1{
+  margin-block: 0;
+  font-size: 5rem;
+  font-family: 'Impact';
+  letter-spacing: 2.5px;
+}
+
+.LandingPage .button-holder{
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.button-holder *{
+  text-decoration: none;
+  display: inline-block;
+  background-color: white;
+  padding: 0.75rem 2.5rem;
+  border-radius: 2.5rem;
+  font-family: "Lilita One";
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  color: var(--primary-color);
+  cursor: pointer;
+}
