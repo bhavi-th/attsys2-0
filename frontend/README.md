@@ -1,16 +1,25 @@
-# React + Vite
+# Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Setup
 
-Currently, two official plugins are available:
+First clone the repo and cd into the frontend dir then run this command
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+<code>npm i</code>
 
-## React Compiler
+After all the installation is done. Run this command
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+<code>npm run dev</code>
 
-## Expanding the ESLint configuration
+You will get an output like :
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+<code>VITE v7.2.6  ready in 224 ms
+➜ Local: http://localhost:5173/
+➜ Network: use --host to expose
+➜ press h + enter to show help
+</code>
+
+Note : When I say press <code>o</code> you don't have to keep on holding the key <code>o</code> and press <code>Enter</code>. You just have to press the key <code>o</code> once and then press the <code>Enter</code> key.
+
+Now press <code>o</code> and hit <code>Enter</code>. This will open the website in your browser.
+
+Press <code>q</code> and hit <code>Enter</code> to stop the vite / server / or whatever it's called.
