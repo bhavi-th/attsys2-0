@@ -17,7 +17,7 @@ const FormPage = ({ formType }) => {
           }
         </div>
         <div className="button-holder">
-          <button type="reset">Cancel</button>
+          <button type="reset">Clear</button>
           <button type="submit">{formType}</button>
         </div>
       </form>
