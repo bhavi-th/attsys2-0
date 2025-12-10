@@ -34,10 +34,11 @@ cur = conn.cursor()
 cur.execute(
     """
 CREATE TABLE IF NOT EXISTS students (
-    uid    TEXT,
-    name   TEXT,
-    usn    TEXT,
-    branch TEXT
+    uid      TEXT,
+    name     TEXT,
+    usn      TEXT,
+    branch   TEXT,
+    password TEXT
 )
 """
 )
