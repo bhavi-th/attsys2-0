@@ -8,8 +8,8 @@ const LandingPage = () => {
       <div className="LandingPage">
         <h1>ATTSYS2-0</h1>
         <div className="button-holder">
-          <Link to="/login">Login</Link>
-          <Link to="/signup">Sign Up</Link>
+          <Link className="btn" to="/login">Login</Link>
+          <Link className="btn" to="/signup">Sign Up</Link>
         </div>
       </div>
     </>

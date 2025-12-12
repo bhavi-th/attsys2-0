@@ -1,9 +1,9 @@
-import FormPage from "./FormPage"
+import Form from "../components/Form"
 
 const LoginPage = () => {
   return (
     <div className="LoginPage">
-      <FormPage formType="Log In"/>
+      <Form formType="Log In"/>
     </div>
   )
 }
