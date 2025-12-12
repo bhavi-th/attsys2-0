@@ -7,7 +7,7 @@ const Form = ({ formType, type }) => {
       <Link className="logo" to="/">
         ATTSYS2-0
       </Link>
-      <form className="form">
+      <form className="form" action="/dash">
         <h1>{formType}</h1>
         <div className="input-holder">
           <input
