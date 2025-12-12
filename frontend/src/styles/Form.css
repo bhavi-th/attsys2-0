@@ -27,7 +27,7 @@
   place-items: center;
 }
 
-.login-form {
+.form {
   font-family: "Lilita One";
   height: 75%;
   width: 100%;
@@ -38,12 +38,12 @@
   gap: 1.5rem;
 }
 
-.login-form h1 {
+.form h1 {
   font-size: 4.5rem;
   font-weight: bold;
 }
 
-.login-form .input-holder {
+.form .input-holder {
   width: 100%;
   display: flex;
   align-items: center;
@@ -52,7 +52,7 @@
   gap: 1.5rem;
 }
 
-.login-form input {
+.form input {
   width: 60vmin;
   font-family: 'Lilita One';
   background-color: white;
@@ -63,13 +63,13 @@
   font-weight: bold;
 }
 
-.login-form .button-holder {
+.form .button-holder {
   width: 60vmin;
   display: flex;
   justify-content: space-between;
 }
 
-.login-form button{
+.form button{
   background-color: grey;
   color: white;
   padding: 0.75rem 2rem;
@@ -77,7 +77,7 @@
   border:none;
 }
 
-.login-form button:nth-child(2n){
+.form button:nth-child(2n){
   background-color: lime;
   color: white;
 }

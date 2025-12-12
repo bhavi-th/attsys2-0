@@ -10,8 +10,13 @@ const App = () => {
   return (
     <Router>
       <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/login/student" element={<LoginPage type="student" />} />
+        <Route path="/login/teacher" element={<LoginPage type="teacher" />} />
+        <Route path="/signup/student" element={<SignUp type="student" />} />
+        <Route path="/signup/teacher" element={<SignUp type="teacher" />} />
         <Route
-          path="/"
+          path="/dash"
           element={
             <>
               <NavBar />
@@ -19,9 +24,6 @@ const App = () => {
             </>
           }
         />
-        <Route path="/auth" element={<LandingPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignUp />} />
       </Routes>
     </Router>
   );

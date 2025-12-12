@@ -1,9 +1,9 @@
 import Form from "../components/Form"
 
-const SignUp = () => {
+const SignUp = ({ type }) => {
   return (
     <div className="SignUp">
-      <Form formType="Sign Up" />
+      <Form formType="Sign Up" type={type} />
     </div>
   );
 };
