@@ -8,6 +8,7 @@
 }
 
 .nav-logo{
+  text-decoration: none;
   font-family: 'Impact';
   font-size: 1.5rem;
   letter-spacing: 1px;

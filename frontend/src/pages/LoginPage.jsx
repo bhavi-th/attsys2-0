@@ -1,9 +1,9 @@
 import Form from "../components/Form"
 
-const LoginPage = () => {
+const LoginPage = ({ type }) => {
   return (
     <div className="LoginPage">
-      <Form formType="Log In"/>
+      <Form formType="Log In" type={type}/>
     </div>
   )
 }
