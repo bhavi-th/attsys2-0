@@ -25,3 +25,16 @@ h1{
   margin-block: 0;
 }
 
+button, .btn{
+  text-decoration: none;
+  display: inline-block;
+  background-color: white;
+  padding: 0.75rem 2.5rem;
+  border-radius: 2.5rem;
+  font-family: "Lilita One";
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  color: var(--primary-color);
+  cursor: pointer;
+}

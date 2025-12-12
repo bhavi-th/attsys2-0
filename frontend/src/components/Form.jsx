@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
-import "../styles/FormPage.css";
+import "../styles/Form.css";
 
-const FormPage = ({ formType }) => {
+const Form = ({ formType }) => {
   return (
-    <div className="FormPage">
+    <div className="Form">
       <Link className="logo" to="/">ATTSYS2-0</Link>
       <form className="login-form">
         <h1>{formType}</h1>
@@ -25,4 +25,4 @@ const FormPage = ({ formType }) => {
   );
 };
 
-export default FormPage;
+export default Form;
