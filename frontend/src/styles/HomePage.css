@@ -33,7 +33,8 @@
   height: 250px;
   aspect-ratio: 1/1;
   background-color: lightgrey;
-  margin: 2rem;
+  border: 3.5px solid black;
+  margin: 1.5rem;
 }
 
 .scanner-holder button:nth-child(2n) {
