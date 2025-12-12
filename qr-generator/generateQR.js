@@ -1,14 +1,13 @@
-const QRCode = require("qrcode");
-const crypto = require("crypto");
+// generateQR.js
+import qrcode from "qrcode";
+import crypto from "crypto";
 
-async function generateQR() {
-    const passkey = crypto.randomBytes(16).toString("hex");
-    console.log("Generated Passkey:", passkey);
+export async function generateQR(filePath = "qr.png") {
+  const passkey = crypto.randomBytes(16).toString("hex");
+  console.log("Generated Passkey:", passkey);
 
-    await QRCode.toFile("qr.png", passkey);
+  await qrcode.toFile(filePath, passkey);
 
-    console.log("QR saved as qr.png");
+  console.log("QR saved as", filePath);
+  return passkey; // return so backend can use it
 }
-
-generateQR();
-
