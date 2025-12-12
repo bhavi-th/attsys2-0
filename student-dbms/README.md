@@ -6,6 +6,9 @@ Made to automate the database creation process.
 
 ## Usage
 
+First create & activate the virtual environment and install the required libraries using:
+`pip install -r requirements.txt`
+
 Pass in the path to pdf and path to output file as arguments.
 
 `python3 main.py <source.pdf> <output.db>`
