@@ -1,27 +1,23 @@
 import { useState } from "react";
 import { Scanner } from "@yudiel/react-qr-scanner";
+import "../styles/QRScanner.css";
 
 function QRScanner() {
   const [scanResult, setScanResult] = useState("");
 
   return (
-    <div style={{ textAlign: "center", marginTop: "20px" }}>
-      <h2>QR Scanner (Mobile)</h2>
+    <div className="qrscanner-container" id="qrscanner-container">
+      <h2 className="qrscanner-title">QR Scanner (Mobile)</h2>
 
-      <Scanner
-        onDecode={(result) => setScanResult(result)}
-        onError={(error) => console.error(error)}
-        constraints={{ facingMode: "environment" }} // back camera on mobile
-        style={{
-          width: "100%",
-          maxWidth: "400px",
-          margin: "auto",
-          border: "2px solid #333",
-          borderRadius: "8px",
-        }}
-      />
+      <div className="scanner-wrapper">
+        <Scanner
+          onDecode={(result) => setScanResult(result)}
+          onError={(error) => console.error(error)}
+          constraints={{ facingMode: "environment" }}
+        />
+      </div>
 
-      <p style={{ marginTop: "20px" }}>
+      <p className="qrscanner-result">
         <strong>Scanned Code:</strong>{" "}
         {scanResult || "Point your camera at a QR code"}
       </p>
