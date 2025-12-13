@@ -1,0 +1,20 @@
+.qrscanner-container {
+  color : black;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.qrscanner-title {
+  margin-bottom: 20px;
+}
+
+.scanner-wrapper{
+  width: 75%;
+  margin: auto;
+  border: 2px solid #333;
+  border-radius: 8px;
+}
+
+.qrscanner-result {
+  margin-top: 20px;
+}
