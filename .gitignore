@@ -32,6 +32,3 @@ env/
 
 # Student Databases
 student-databases/
-
-# QR Generator
-qr-generator/qr.png
