@@ -5,6 +5,7 @@ import LandingPage from "./pages/LandingPage";
 import LoginPage from "./pages/LoginPage";
 import SignUp from "./pages/SignUp";
 import HomePage from "./pages/HomePage";
+import QRScanner from "./pages/QRScanner";
 
 const App = () => {
   return (
@@ -24,6 +25,7 @@ const App = () => {
             </>
           }
         />
+        <Route path="/qrscanner" element={<QRScanner />} />
       </Routes>
     </Router>
   );

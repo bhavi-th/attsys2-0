@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const LandingPage = () => {
   return (
     <>
-      <div class="background"></div>
+      <div className="background"></div>
       <div className="LandingPage">
         <h1>ATTSYS2-0</h1>
         <div className="button-holder">
