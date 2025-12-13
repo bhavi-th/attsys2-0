@@ -10,26 +10,32 @@ const Form = ({ formType, type }) => {
       <form className="form" action="/dash">
         <h1>{formType}</h1>
         <div className="input-holder">
-          <input
-            placeholder={type == "teacher" ? "Mail ID" : "USN"}
-            type={type == "teacher" ? "email" : "text"}
-            required
-          />
+          <input placeholder="Mail ID" type="email" required />
           <input placeholder="Password" type="password" required />
         </div>
         <div className="button-holder">
           <button type="reset">Clear</button>
           <button type="submit">{formType}</button>
         </div>
-        {(formType == "Log In") ? 
+        {formType == "Log In" ? (
           <p>
-            Don't have an account? Click <Link to={(type=="teacher") ? "/signup/teacher" : "/signup/student"}>here</Link> to signup
+            Don't have an account? Click{" "}
+            <Link
+              to={type == "teacher" ? "/signup/teacher" : "/signup/student"}
+            >
+              here
+            </Link>{" "}
+            to signup
           </p>
-        :
+        ) : (
           <p>
-            Already have an account? Click <Link to={(type=="teacher") ? "/login/teacher" : "/login/student"}>here</Link> to login
+            Already have an account? Click{" "}
+            <Link to={type == "teacher" ? "/login/teacher" : "/login/student"}>
+              here
+            </Link>{" "}
+            to login
           </p>
-        }
+        )}
       </form>
     </div>
   );
