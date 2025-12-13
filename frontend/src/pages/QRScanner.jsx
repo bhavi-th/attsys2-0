@@ -11,9 +11,20 @@ function QRScanner() {
 
       <div className="scanner-wrapper">
         <Scanner
-          onDecode={(result) => setScanResult(result)}
-          onError={(error) => console.error(error)}
-          constraints={{ facingMode: "environment" }}
+          onDecode={(result) => {
+            if (result) {
+              // Handle both string and object results
+              const text =
+                typeof result === "string" ? result : result.rawValue;
+              setScanResult(text);
+            }
+          }}
+          onError={(error) => console.error("Scanner error:", error)}
+          constraints={{ video: { facingMode: { exact: "environment" } } }}
+          components={{
+            // Optional overlay guides
+            tracker: true,
+          }}
         />
       </div>
 
