@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Table from "../components/Table";
 import "../styles/HomePage.css";
 
@@ -21,21 +22,71 @@ const sampleData = [
 ];
 
 const HomePage = () => {
-  // const [qr, setQr] = useState(`http://localhost:5000/qr?${Date.now()}`);
+  const [isValidating, setIsValidating] = useState(true);
   const [qr, setQr] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const initPage = async () => {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        navigate("/login/student");
+        return;
+      }
+
+      try {
+        const response = await fetch("http://localhost:5000/api/verify", {
+          method: "GET",
+          headers: {
+            Authorization: token,
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          localStorage.clear();
+          navigate("/login/student");
+        } else {
+          // 1. Verification passed
+          setIsValidating(false);
+          // 2. ONLY NOW generate the QR code
+          setQr(`http://localhost:5000/qr?${Date.now()}`);
+        }
+      } catch (error) {
+        console.error("Verification failed:", error);
+        navigate("/login/student");
+      }
+    };
+
+    initPage();
+  }, [navigate]);
 
   const generateQR = () => {
     setQr(`http://localhost:5000/qr?${Date.now()}`);
   };
 
-  useEffect(() => {
-    generateQR();
-  }, []);
+  // If we are still checking the token, show a clean loading screen
+  // This prevents the "break dance"
+  if (isValidating) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <h2>Verifying Session...</h2>
+      </div>
+    );
+  }
 
   return (
     <div className="HomePage">
       <div className="scanner-holder">
-        <img src={qr} alt="QR Code" className="qr-generator" />
+        {qr && <img src={qr} alt="QR Code" className="qr-generator" />}
         <div className="button-holder">
           <button onClick={generateQR}>Generate</button>
           <button>Stop</button>
@@ -49,5 +100,4 @@ const HomePage = () => {
     </div>
   );
 };
-
 export default HomePage;
