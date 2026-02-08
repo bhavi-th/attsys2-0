@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import NavBar from "./components/NavBar";
 import LandingPage from "./pages/LandingPage";
@@ -10,8 +10,6 @@ import QRScanner from "./pages/QRScanner";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => {
-  const [loading, setLoading] = useState(true);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -20,7 +18,6 @@ const App = () => {
     const role = localStorage.getItem("userRole");
 
     if (token) {
-      setIsAuthenticated(true);
       // If they are logged in and trying to go to landing/login, send to dash
       const publicPaths = ["/", "/login/student", "/login/teacher"];
       if (publicPaths.includes(location.pathname)) {
@@ -28,7 +25,6 @@ const App = () => {
       }
     }
 
-    setLoading(false); // Check finished!
 
     // If they have a token and are trying to access the login/landing page...
     const publicPaths = [
@@ -44,10 +40,6 @@ const App = () => {
       navigate("/dash");
     }
   }, [navigate, location]);
-
-  if (loading) {
-    return <div className="loading-screen">Loading...</div>; // No more flash!
-  }
 
   return (
     <Routes>

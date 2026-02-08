@@ -51,7 +51,7 @@ const HomePage = () => {
           // 1. Verification passed
           setIsValidating(false);
           // 2. ONLY NOW generate the QR code
-          setQr(`http://localhost:5000/qr?${Date.now()}`);
+          setQr(`http://localhost:5001/qr?${Date.now()}`);
         }
       } catch (error) {
         console.error("Verification failed:", error);
@@ -63,7 +63,7 @@ const HomePage = () => {
   }, [navigate]);
 
   const generateQR = () => {
-    setQr(`http://localhost:5000/qr?${Date.now()}`);
+    setQr(`http://localhost:5001/qr?${Date.now()}`);
   };
 
   // If we are still checking the token, show a clean loading screen
