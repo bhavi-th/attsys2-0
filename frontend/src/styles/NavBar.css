@@ -9,6 +9,8 @@
 }
 
 .nav-logo {
+  user-select: none;
+  color: white;
   text-decoration: none;
   font-family: "Impact";
   font-size: 1.5rem;

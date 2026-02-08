@@ -6,7 +6,25 @@
   width: 100dvw;
 }
 
-.LandingPage{
+#blur-one, #blur-two{
+  position: absolute;
+  background: radial-gradient(circle, #c1ff72, #c1ff72, transparent);
+  height: 45rem;
+  aspect-ratio: 1/1;
+  overflow: hidden;
+}
+
+#blur-one{
+  top: 0dvh;
+  left: 0dvh;
+}
+
+#blur-two{
+  bottom: 0dvh;
+  right: 0dvh;
+}
+
+.blue-background{
   position:absolute;
   top: 50%;
   left: 50%;
@@ -15,23 +33,36 @@
   width: 90dvw;
   background-color: var(--primary-color);
   display: flex;
+  border-radius: 1.5rem;
+}
+
+.LandingPage{
   align-items: center;
   justify-content: space-evenly;
   flex-direction: column;
   gap: 2.5rem;
-  border-radius: 1.5rem;
-  z-index: 1;
+  z-index: 2;
 }
 
 .LandingPage h1{
   margin-block: 0;
-  font-size: 5rem;
+  font-size: 7rem;
   font-family: 'Impact';
-  letter-spacing: 2.5px;
+  letter-spacing: 0.25rem;
+  color: white;
 }
 
 .LandingPage .button-holder{
+  letter-spacing: 0.1rem;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 2.5vh;
+}
+
+.LandingPage .btn{
+  transition: background-color 250ms linear;
+}
+
+.LandingPage .btn:hover{
+  background-color: #c1ff72;
 }

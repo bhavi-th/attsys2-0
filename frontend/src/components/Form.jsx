@@ -29,7 +29,7 @@ const Form = ({ formType, type }) => {
           console.log("Saved to storage : ", data.user.role);
           alert("Login Successful!");
         } else {
-          alert("Registration Successful!");
+          alert("Registration Successful! Login with your new account to continue");
         }
 
         navigate("/dash"); // Send user to dashboard on success
@@ -43,61 +43,67 @@ const Form = ({ formType, type }) => {
   };
 
   return (
-    <div className="Form">
-      <Link className="logo" to="/">
-        ATTSYS2-0
-      </Link>
-      <form className="form" onSubmit={handleSubmit}>
-        <h1>{formType}</h1>
-        <div className="input-holder">
-          <input
-            placeholder="Mail ID"
-            type="email"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <input
-            placeholder="Password"
-            type="password"
-            required
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-        <div className="button-holder">
-          <button
-            type="reset"
-            onClick={() => {
-              setEmail("");
-              setPassword("");
-            }}
-          >
-            Clear
-          </button>
-          <button type="submit">{formType}</button>
-        </div>
-        {formType == "Log In" ? (
-          <p>
-            Don't have an account? Click{" "}
-            <Link
-              to={type == "teacher" ? "/signup/teacher" : "/signup/student"}
+    <>
+      <div className="form-blur" id="blur-one"></div>
+      <div className="form-blur" id="blur-two"></div>
+      <div className="Form blue-background">
+        <Link className="logo" to="/">
+          ATTSYS2-0
+        </Link>
+        <form className="form" onSubmit={handleSubmit}>
+          <h1>{formType}</h1>
+          <div className="input-holder">
+            <input
+              placeholder="Mail ID"
+              type="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <input
+              placeholder="Password"
+              type="password"
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          <div className="button-holder">
+            <button
+              type="reset"
+              onClick={() => {
+                setEmail("");
+                setPassword("");
+              }}
             >
-              here
-            </Link>{" "}
-            to signup
-          </p>
-        ) : (
-          <p>
-            Already have an account? Click{" "}
-            <Link to={type == "teacher" ? "/login/teacher" : "/login/student"}>
-              here
-            </Link>{" "}
-            to login
-          </p>
-        )}
-      </form>
-    </div>
+              Clear
+            </button>
+            <button type="submit">{formType}</button>
+          </div>
+          {formType == "Log In" ? (
+            <p>
+              Don't have an account? Click{" "}
+              <Link
+                to={type == "teacher" ? "/signup/teacher" : "/signup/student"}
+              >
+                here
+              </Link>{" "}
+              to signup
+            </p>
+          ) : (
+            <p>
+              Already have an account? Click{" "}
+              <Link
+                to={type == "teacher" ? "/login/teacher" : "/login/student"}
+              >
+                here
+              </Link>{" "}
+              to login
+            </p>
+          )}
+        </form>
+      </div>
+    </>
   );
 };
 

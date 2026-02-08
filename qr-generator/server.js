@@ -3,7 +3,7 @@ import path from "path";
 import { generateQR } from "./generateQR.js";
 
 const app = express();
-const PORT = 5000;
+const PORT = 5001;
 
 app.get("/qr", async (req, res) => {
   try {
