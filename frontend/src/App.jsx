@@ -1,6 +1,12 @@
 import "./App.css";
 import { useEffect } from "react";
-import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  useNavigate,
+  useLocation,
+  Navigate,
+} from "react-router-dom";
 import { useAuth } from "./hooks/useAuth"; // Import our custom hook
 import NavBar from "./components/NavBar";
 import LandingPage from "./pages/LandingPage";
@@ -48,11 +54,23 @@ const App = () => {
         element={
           <ProtectedRoute>
             <NavBar />
-            <HomePage />
+            {user?.role === "teacher" ? (
+              <HomePage />
+            ) : (
+              <Navigate to="/qrscanner" />
+            )}
           </ProtectedRoute>
         }
       />
-      <Route path="/qrscanner" element={<QRScanner />} />
+      <Route
+        path="/qrscanner"
+        element={
+          <ProtectedRoute>
+            <NavBar />
+            <QRScanner />
+          </ProtectedRoute>
+        }
+      />
       <Route
         path="/onboard/teacher"
         element={<OnBoarding formType="login" type="teacher" />}
