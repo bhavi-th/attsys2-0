@@ -78,13 +78,13 @@ router.post("/register", async (req, res) => {
 
 router.patch("/onboarding/:id", async (req, res) => {
   try {
-    const { name, branchSubject, sections } = req.body;
+    const { name, USNSubject, sections } = req.body;
 
     const updatedUser = await User.findByIdAndUpdate(
       req.params.id,
       {
         name,
-        branchSubject,
+        USNSubject,
         sections,
         isOnboarded: true,
       },

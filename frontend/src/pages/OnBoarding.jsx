@@ -6,7 +6,7 @@ import { useAuth } from "../hooks/useAuth.js";
 
 const OnBoarding = ({ type }) => {
   const [name, setName] = useState("");
-  const [branchSubject, setBranchSubject] = useState("");
+  const [USNSubject, setUSNSubject] = useState("");
   const [section, setSection] = useState("");
   const navigate = useNavigate();
   const { user, setUser } = useAuth();
@@ -28,7 +28,7 @@ const OnBoarding = ({ type }) => {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/onboarding/${idToUpdate}`,
+        `${import.meta.env.VITE_URL}:5000/api/onboarding/${idToUpdate}`,
         {
           method: "PATCH",
           headers: {
@@ -38,7 +38,7 @@ const OnBoarding = ({ type }) => {
           },
           body: JSON.stringify({
             name,
-            branchSubject,
+            USNSubject,
             sections: sectionsArr,
           }),
         },
@@ -54,7 +54,8 @@ const OnBoarding = ({ type }) => {
         if (user) {
           localStorage.setItem("isOnboarded", "true");
           setUser({ ...user, isOnboarded: true });
-          navigate("/dash");
+          const target = user.role === "student" ? "/qrscanner" : "/dash";
+          navigate(target);
         } else {
           // If they just registered, they must log in now
           alert("Profile Setup Complete! Please Login.");
@@ -91,11 +92,11 @@ const OnBoarding = ({ type }) => {
               onChange={(e) => setName(e.target.value)}
             />
             <input
-              placeholder={type == "student" ? "Branch" : "Subject"}
+              placeholder={type == "student" ? "USN" : "Subject"}
               type="text"
               required
-              value={branchSubject}
-              onChange={(e) => setBranchSubject(e.target.value)}
+              value={USNSubject}
+              onChange={(e) => setUSNSubject(e.target.value)}
             />
             <input
               placeholder={type === "student" ? "Section" : "Sections"}
@@ -118,7 +119,7 @@ const OnBoarding = ({ type }) => {
               type="reset"
               onClick={() => {
                 setName("");
-                setBranchSubject("");
+                setUSNSubject("");
                 setSection("");
               }}
             >

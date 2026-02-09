@@ -6,7 +6,7 @@ const UserSchema = new mongoose.Schema({
   password: { type: String, required: true },
   role: { type: String, enum: ["student", "teacher"], required: true }, // Added role
   name: { type: String},
-  branchSubject : {type: String},
+  USNSubject : {type: String},
   sections: [{type: String}],
   isOnboarded: {type: Boolean, default: false}
 });

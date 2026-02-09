@@ -1,11 +1,21 @@
 import "../styles/Table.css";
 
 const Table = ({ data }) => {
+  // GUARD: If data is empty or not yet loaded, don't crash the app!
+  if (!data || data.length === 0) {
+    return (
+      <div className="table-container">
+        <p className="no-data-msg">Waiting for students to scan...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="table-container">
       <table className="dynamic-table">
         <thead>
           <tr>
+            {/* Safe to access data[0] now because we checked length above */}
             {Object.keys(data[0]).map((key) => (
               <th key={key}>{key}</th>
             ))}
@@ -15,7 +25,17 @@ const Table = ({ data }) => {
           {data.map((row, i) => (
             <tr key={i}>
               {Object.values(row).map((val, j) => (
-                <td key={j} className={(j==0)?"sno": (j==1)?"name": (j==2)?"usn": "status"} >{val}</td>
+                <td 
+                  key={j} 
+                  className={
+                    j === 0 ? "sno" : 
+                    j === 1 ? "name" : 
+                    j === 2 ? "usn" : 
+                    "status"
+                  }
+                >
+                  {val}
+                </td>
               ))}
             </tr>
           ))}
@@ -26,4 +46,3 @@ const Table = ({ data }) => {
 };
 
 export default Table;
-
