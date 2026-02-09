@@ -5,6 +5,10 @@ const UserSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   role: { type: String, enum: ["student", "teacher"], required: true }, // Added role
+  name: { type: String},
+  branchSubject : {type: String},
+  sections: [{type: String}],
+  isOnboarded: {type: Boolean, default: false}
 });
 
 UserSchema.pre("save", async function () {

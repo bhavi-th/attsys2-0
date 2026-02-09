@@ -1,6 +1,7 @@
 import "./App.css";
 import { useEffect } from "react";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import { useAuth } from "./hooks/useAuth"; // Import our custom hook
 import NavBar from "./components/NavBar";
 import LandingPage from "./pages/LandingPage";
 import LoginPage from "./pages/LoginPage";
@@ -8,25 +9,15 @@ import SignUp from "./pages/SignUp";
 import HomePage from "./pages/HomePage";
 import QRScanner from "./pages/QRScanner";
 import ProtectedRoute from "./components/ProtectedRoute";
+import OnBoarding from "./pages/OnBoarding";
 
 const App = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { user } = useAuth(); // Get user state from context
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const role = localStorage.getItem("userRole");
-
-    if (token) {
-      // If they are logged in and trying to go to landing/login, send to dash
-      const publicPaths = ["/", "/login/student", "/login/teacher"];
-      if (publicPaths.includes(location.pathname)) {
-        navigate("/dash");
-      }
-    }
-
-
-    // If they have a token and are trying to access the login/landing page...
+    // Define public routes
     const publicPaths = [
       "/",
       "/login/student",
@@ -35,11 +26,15 @@ const App = () => {
       "/signup/teacher",
     ];
 
-    if (token && role && publicPaths.includes(location.pathname)) {
-      // ...automatically send them to their dashboard
+    // If user is fully authenticated and onboarded, keep them away from public pages
+    if (
+      user?.token &&
+      user?.isOnboarded &&
+      publicPaths.includes(location.pathname)
+    ) {
       navigate("/dash");
     }
-  }, [navigate, location]);
+  }, [user, navigate, location.pathname]);
 
   return (
     <Routes>
@@ -57,13 +52,14 @@ const App = () => {
           </ProtectedRoute>
         }
       />
+      <Route path="/qrscanner" element={<QRScanner />} />
       <Route
-        path="/qrscanner"
-        element={
-          <ProtectedRoute>
-            <QRScanner />
-          </ProtectedRoute>
-        }
+        path="/onboard/teacher"
+        element={<OnBoarding formType="login" type="teacher" />}
+      />
+      <Route
+        path="/onboard/student"
+        element={<OnBoarding formType="login" type="student" />}
       />
     </Routes>
   );

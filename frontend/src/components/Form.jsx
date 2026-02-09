@@ -1,38 +1,53 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 import "../styles/Form.css";
 
 const Form = ({ formType, type }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const { login } = useAuth(); // Destructure login from context
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Stop page reload
+    e.preventDefault();
 
-    // Determine the correct URL based on the formType
     const endpoint = formType === "Log In" ? "/login" : "/register";
 
     try {
       const response = await fetch(`http://localhost:5000/api${endpoint}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password, role: type }), // Sending role (student/teacher) too!
+        body: JSON.stringify({ email, password, role: type }),
       });
 
       const data = await response.json();
 
       if (response.ok) {
         if (formType === "Log In") {
-          localStorage.setItem("token", data.token);
-          localStorage.setItem("userRole", data?.user?.role || "");
-          console.log("Saved to storage : ", data.user.role);
-          alert("Login Successful!");
-        } else {
-          alert("Registration Successful! Login with your new account to continue");
-        }
+          // Use the central login function!
+          // This sets token, role, isOnboarded, and userId in one shot
+          login({
+            token: data.token,
+            role: data.user.role,
+            isOnboarded: data.user.isOnboarded,
+            id: data.user.id,
+          });
 
-        navigate("/dash"); // Send user to dashboard on success
+          alert("Login Successful!");
+
+          // Redirect logic based on onboarding status
+          if (!data.user.isOnboarded) {
+            navigate(`/onboard/${data.user.role}`);
+          } else {
+            navigate("/dash");
+          }
+        } else {
+          // Registration Flow
+          localStorage.setItem("onboardingUserId", data.userId);
+          alert("Account created! Let's set up your profile.");
+          navigate(`/onboard/${type}`);
+        }
       } else {
         alert(data.error || "Something went wrong");
       }
