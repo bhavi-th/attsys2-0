@@ -1,0 +1,24 @@
+.greetings{
+  height: 100%;
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #7ed957;
+  color: var(--primary-color);
+  font-family: 'Lilita One';
+  border-radius: 1.5rem;
+  padding-inline: 1rem;
+}
+
+.greetings h1{
+  font-size: 2.5rem;
+}
+
+.greetings p{
+  font-size: 1.5rem;
+}
+
+#sections{
+  color: black
+}
