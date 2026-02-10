@@ -4,25 +4,7 @@
   
 <ol>
   <li>
-    First verify that your system has nodejs or not by entering this command<br/>
-    <code>node --version</code><br/>
-    <code>npm --version</code>
-  </li><br/>
-  <li>
-    If <code>nodejs</code> is not installed. Install it using the command<br/>
-    <ul>
-      <li>
-    For debian based system<br/>
-    <code>sudo apt install nodejs</code><br/>
-      </li>
-      <li>
-    For arch based system<br/>
-    <code>sudo pacman -S nodejs</code><br/>
-      </li>
-    </ul>
-  </li><br/>
-  <li>
-    Then cd into the frontend dir then run this command<br/>
+    <code>cd</code> into the frontend dir then run this command<br/>
     <code>npm i</code>
   </li><br/>
   <li>
