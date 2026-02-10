@@ -31,10 +31,17 @@
   </li><br/>
   <li>
     You will get an output like :<br/>
-      <code>VITE v7.2.6  ready in 224 ms
-➜ Local: http://localhost:5173/
-➜ Network: use --host to expose
-➜ press h + enter to show help</code>
+      <code>> backend@1.0.0 dev
+> nodemon server.js
+
+[nodemon] 3.1.11
+[nodemon] to restart at any time, enter `rs`
+[nodemon] watching path(s): *.*
+[nodemon] watching extensions: js,mjs,cjs,json
+[nodemon] starting `node server.js`
+[dotenv@17.2.4] injecting env (3) from .env -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+🚀 Server running on port 5000
+✅ Connected to MongoDB</code>
   </li>
 </ol>
 
