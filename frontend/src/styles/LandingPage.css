@@ -29,7 +29,7 @@
   top: 50%;
   left: 50%;
   transform: translateX(-50%) translateY(-50%);
-  height: 85dvh;
+  height: 80dvh;
   width: 90dvw;
   background-color: var(--primary-color);
   display: flex;
@@ -46,7 +46,7 @@
 
 .LandingPage h1{
   margin-block: 0;
-  font-size: 7rem;
+  font-size: 15vmin;
   font-family: 'Impact';
   letter-spacing: 0.25rem;
   color: white;
@@ -61,6 +61,7 @@
 
 .LandingPage .btn{
   transition: background-color 250ms linear;
+  font-size: 3.5vmin;
 }
 
 .LandingPage .btn:hover{
