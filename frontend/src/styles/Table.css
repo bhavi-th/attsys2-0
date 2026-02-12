@@ -18,7 +18,7 @@
   border: 2.5px solid black;
   border-top: none;
   padding: 0.5rem;
-  text-align: left;
+  text-align: center;
 }
 
 .dynamic-table tr:last-child td{
@@ -28,16 +28,13 @@
 .dynamic-table th {
   background-color: var(--primary-color);
   color: white;
-  text-align: center;
 }
 
 .dynamic-table td.sno{
-  text-align: center;
   width: 2.5rem;
 }
 
 .dynamic-table td.usn{
-  text-align: center;
   max-width: 8rem;
 }
 
