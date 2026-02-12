@@ -54,6 +54,6 @@ app.get("/qr", async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`🚀 QR Generator running on http://localhost:${PORT}`);
+app.listen(PORT, process.env.URL, () => {
+  console.log(`🚀 QR Generator running on http://${process.env.URL}:${PORT}`);
 });
