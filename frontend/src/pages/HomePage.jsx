@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react"; // Added useRef
 import { useAuth } from "../hooks/useAuth.js";
 import Table from "../components/Table";
 import "../styles/HomePage.css";
@@ -11,24 +11,21 @@ const HomePage = () => {
   const [qr, setQr] = useState(null);
   const [attendanceList, setAttendanceList] = useState([]);
 
+  // --- New Timer State ---
+  const [timeLeft, setTimeLeft] = useState(0);
+  const timerRef = useRef(null);
+
   const downloadPDF = () => {
     if (!attendanceList || attendanceList.length === 0) return;
-
-    // Create document
-    const doc = new jsPDF("p", "pt", "a4"); // 'pt' (points) is often more stable for autotable
-
-    // Prepare data
+    const doc = new jsPDF("p", "pt", "a4");
     const columns = Object.keys(attendanceList[0]).map((key) => ({
       header: key.toUpperCase(),
       dataKey: key,
     }));
 
-    const rows = attendanceList;
-
-    // CALL AUTOTABLE
     autoTable(doc, {
       columns: columns,
-      body: rows,
+      body: attendanceList,
       startY: 40,
       margin: { top: 40 },
       didDrawPage: () => {
@@ -42,10 +39,9 @@ const HomePage = () => {
     doc.save(`Attendance_${Date.now()}.pdf`);
   };
 
-  // Fetch live attendance data from the backend
+  // Live attendance polling
   useEffect(() => {
     const fetchAttendance = async () => {
-      // Only fetch if we have a logged-in teacher
       if (user?.role === "teacher" && user?.userId) {
         try {
           const response = await fetch(
@@ -61,40 +57,46 @@ const HomePage = () => {
       }
     };
 
-    // Poll every 5 seconds for live updates
     const interval = setInterval(fetchAttendance, 5000);
-    fetchAttendance(); // Initial fetch
+    fetchAttendance();
 
     return () => clearInterval(interval);
   }, [user]);
 
+  // --- Timer Logic ---
+  useEffect(() => {
+    if (timeLeft > 0) {
+      timerRef.current = setInterval(() => {
+        setTimeLeft((prev) => prev - 1);
+      }, 1000);
+    } else if (timeLeft === 0) {
+      clearInterval(timerRef.current);
+    }
+
+    return () => clearInterval(timerRef.current);
+  }, [timeLeft]);
+
   const generateQR = () => {
-    // Port 5001 handles the QR generation and Session creation
     setQr(
       `${import.meta.env.VITE_URL}:5001/qr?teacherId=${user.userId}&time=${Date.now()}`,
     );
+    setTimeLeft(10); // Reset timer to 60 seconds
+  };
+
+  const stopSession = () => {
+    setQr(null);
+    setTimeLeft(0);
   };
 
   const getSortedData = () => {
     if (!attendanceList || attendanceList.length === 0) return [];
-
     return [...attendanceList].sort((a, b) => {
-      // 1. Extract the group code (e.g., "BY" from "1BY24CS075")
       const groupA = (a.usn || "").slice(1, 3).toUpperCase();
       const groupB = (b.usn || "").slice(1, 3).toUpperCase();
-
-      // 2. Primary Sort: Compare the group codes (BY vs TD)
-      if (groupA < groupB) return -1;
-      if (groupA > groupB) return 1;
-
-      // 3. Secondary Sort: If in the same group, sort by Name alphabetically
-      const nameA = (a.name || "").toLowerCase();
-      const nameB = (b.name || "").toLowerCase();
-
-      if (nameA < nameB) return -1;
-      if (nameA > nameB) return 1;
-
-      return 0;
+      if (groupA !== groupB) return groupA.localeCompare(groupB);
+      return (a.name || "")
+        .toLowerCase()
+        .localeCompare((b.name || "").toLowerCase());
     });
   };
 
@@ -104,28 +106,28 @@ const HomePage = () => {
     <div className="HomePage">
       {user?.role === "teacher" && (
         <div className="scanner-holder">
-          <img src={qr} className="qr-generator" />
+          {qr && <img src={qr} className="qr-generator" alt="QR Code" />}
           <div className="button-holder">
             <button className="generate-btn" onClick={generateQR}>
               Generate QR
             </button>
-            <button className="stop-btn" onClick={() => setQr(null)}>
+            <button className="stop-btn" onClick={stopSession}>
               Stop Session
             </button>
           </div>
         </div>
       )}
 
-      {/* Shared View: Data Table */}
       <div className="student-timer">
         <div className="timer">
-          {user?.role === "teacher"
-            ? "Live Classroom Attendance"
-            : "Your Attendance Status"}
+          {timeLeft > 0
+            ? `QR Expires in: ${timeLeft}s`
+            : user?.role === "teacher"
+              ? "Session Inactive"
+              : "Your Attendance Status"}
         </div>
 
-        {/* We now pass the dynamic attendanceList instead of sampleData */}
-        <Table data={sortedAttendance.length > 0 ? sortedAttendance : []} />
+        <Table data={sortedAttendance} />
 
         {attendanceList.length === 0 && (
           <p className="no-data">

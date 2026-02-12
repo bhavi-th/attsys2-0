@@ -21,7 +21,7 @@ mongoose.connect(mongoURI)
 const sessionSchema = new mongoose.Schema({
   passkey: { type: String, required: true, unique: true },
   teacherId: { type: String, required: true },
-  createdAt: { type: Date, default: Date.now, expires: 60 } 
+  createdAt: { type: Date, default: Date.now, expires: 10 }
 });
 
 // Check if the model exists, otherwise create it

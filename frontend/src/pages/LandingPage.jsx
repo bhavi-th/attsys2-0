@@ -5,8 +5,6 @@ const LandingPage = () => {
   return (
     <>
       <div className="background"></div>
-      <div id="blur-one"></div>
-      <div id="blur-two"></div>
       <div className="LandingPage blue-background">
         <h1>ATTSYS2-0</h1>
         <div className="button-holder">

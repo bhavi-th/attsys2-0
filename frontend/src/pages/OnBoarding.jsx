@@ -71,8 +71,6 @@ const OnBoarding = ({ type }) => {
 
   return (
     <>
-      <div className="form-blur" id="blur-one"></div>
-      <div className="form-blur" id="blur-two"></div>
       <div className="Form blue-background">
         <div className="greetings">
           <h1>Welcome on Board</h1>
@@ -83,7 +81,7 @@ const OnBoarding = ({ type }) => {
         </Link>
         <form className="form" onSubmit={handleSubmit}>
           <h1>Personal Info</h1>
-          <div className="input-holder">
+          <div className="input-holder input-holder-info">
             <input
               placeholder="Name"
               type="text"

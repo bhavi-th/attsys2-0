@@ -6,73 +6,72 @@ import "../styles/QRScanner.css";
 
 function QRScanner() {
   const [scanResult, setScanResult] = useState("");
-  const [isScanning, setIsScanning] = useState(true); // To prevent double-taps
   const { user } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
     const scanner = new Html5QrcodeScanner("qr-reader", {
-      fps: 10,
-      qrbox: { width: 250, height: 250 },
+      fps: 15,
+      qrbox: { width: 200, height: 200 },
+      aspectRatio: 1.0,
+      supportedScanTypes: [0],
+      rememberLastUsedCamera: false,
     });
 
     const onScanSuccess = async (decodedText) => {
-      if (!isScanning) return; // Exit if already processing a scan
-
-      setIsScanning(false); 
+      // Stop the scanner immediately to prevent double-scans
+      scanner.clear(); 
       setScanResult(decodedText);
-      console.log("Passkey found:", decodedText);
 
       try {
-        // Send to your MAIN backend (use your Laptop's IP for mobile testing)
         const response = await fetch(`${import.meta.env.VITE_URL}:5000/api/attendance/verify`, {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             passkey: decodedText,
-            studentId: user?.userId, // Sending the student ID
+            studentId: user?.userId,
           }),
         });
 
         const data = await response.json();
 
         if (response.ok) {
-          alert("Attendance marked successfully!");
-          scanner.clear(); // Shut down camera
-          navigate("/dash"); // Send them back to their dashboard
+          alert("✅ Attendance Marked!");
+          navigate("/dash");
         } else {
           alert(data.error || "Verification failed");
-          setIsScanning(true); // Allow them to try again
+          // Logic to restart scanner if verification fails
+          window.location.reload(); 
         }
       } catch (err) {
         console.error("Verification Error:", err);
-        alert("Cannot connect to server. Check your network/IP.");
-        setIsScanning(true);
+        alert("Server Connection Failed");
       }
     };
 
-    scanner.render(onScanSuccess, (err) => {
-      // Ignore routine scan errors
-      console.log("Error : ", err);
+    // Use an empty arrow function to ignore 'err' variable warnings
+    scanner.render(onScanSuccess, () => {
+      /* Ignore constant scanning attempts */
     });
 
     return () => {
-      scanner.clear().catch((e) => console.log("Scanner cleanup", e));
+      scanner.clear().catch((e) => console.warn("Cleanup error", e));
     };
-  }, [user, navigate, isScanning]);
+  }, [user, navigate]);
 
   return (
     <div className="qrscanner-container">
-      <h2 className="qrscanner-title">Scan QR Code</h2>
-      <div id="qr-reader" className="scanner-wrapper"></div>
+      <h2 className="qrscanner-title">Scan Attendance</h2>
+      
+      <div className="scanner-wrapper">
+        <div id="qr-reader"></div>
+      </div>
       
       <div className="status-box">
         {scanResult ? (
-          <p className="success-msg">Verifying code...</p>
+          <p className="success-msg">Processing Code...</p>
         ) : (
-          <p>Align the QR code within the frame</p>
+          <p>Place the QR code inside the frame</p>
         )}
       </div>
     </div>
