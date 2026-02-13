@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react"; // Added useRef
+import { useState, useEffect, useRef } from "react";
 import { useAuth } from "../hooks/useAuth.js";
 import Table from "../components/Table";
 import "../styles/HomePage.css";
@@ -11,7 +11,6 @@ const HomePage = () => {
   const [qr, setQr] = useState(null);
   const [attendanceList, setAttendanceList] = useState([]);
 
-  // --- New Timer State ---
   const [timeLeft, setTimeLeft] = useState(0);
   const timerRef = useRef(null);
 
@@ -39,7 +38,6 @@ const HomePage = () => {
     doc.save(`Attendance_${Date.now()}.pdf`);
   };
 
-  // Live attendance polling
   useEffect(() => {
     const fetchAttendance = async () => {
       if (user?.role === "teacher" && user?.userId) {
@@ -63,7 +61,6 @@ const HomePage = () => {
     return () => clearInterval(interval);
   }, [user]);
 
-  // --- Timer Logic ---
   useEffect(() => {
     if (timeLeft > 0) {
       timerRef.current = setInterval(() => {
@@ -80,7 +77,7 @@ const HomePage = () => {
     setQr(
       `${import.meta.env.VITE_URL}:5001/qr?teacherId=${user.userId}&time=${Date.now()}`,
     );
-    setTimeLeft(10); // Reset timer to 60 seconds
+    setTimeLeft(10);
   };
 
   const stopSession = () => {

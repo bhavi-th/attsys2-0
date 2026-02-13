@@ -5,26 +5,22 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import path from "path";
 
-// 1. Setup Environment
 dotenv.config({ path: path.join(process.cwd(), "..", "backend", ".env") });
 
 const app = express();
 const PORT = 5001;
 
-// 2. Connect to DB
 const mongoURI = process.env.MONGO_URI; 
 mongoose.connect(mongoURI)
   .then(() => console.log("✅ DB Connected"))
   .catch(err => console.error("❌ DB Connection Error:", err));
 
-// 3. Define Schema locally to avoid import/path issues
 const sessionSchema = new mongoose.Schema({
   passkey: { type: String, required: true, unique: true },
   teacherId: { type: String, required: true },
   createdAt: { type: Date, default: Date.now, expires: 10 }
 });
 
-// Check if the model exists, otherwise create it
 const Session = mongoose.models.Session || mongoose.model("Session", sessionSchema);
 
 app.get("/qr", async (req, res) => {
@@ -37,13 +33,11 @@ app.get("/qr", async (req, res) => {
 
     const passkey = crypto.randomBytes(16).toString("hex");
 
-    // 4. Save the passkey
     await Session.create({
       passkey,
       teacherId
     });
 
-    // 5. Stream the QR code image
     res.setHeader("Content-Type", "image/png");
     await qrcode.toFileStream(res, passkey);
     

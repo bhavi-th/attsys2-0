@@ -7,7 +7,7 @@ const Form = ({ formType, type }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const { login } = useAuth(); // Destructure login from context
+  const { login } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -15,7 +15,6 @@ const Form = ({ formType, type }) => {
     const endpoint = formType === "Log In" ? "/login" : "/register";
 
     try {
-      // const response = await fetch(`http://localhost:5000/api${endpoint}`, {
       console.log(import.meta.env.VITE_URL);
       const response = await fetch(`${import.meta.env.VITE_URL}:5000/api${endpoint}`, {
         method: "POST",
@@ -27,8 +26,6 @@ const Form = ({ formType, type }) => {
 
       if (response.ok) {
         if (formType === "Log In") {
-          // Use the central login function!
-          // This sets token, role, isOnboarded, and userId in one shot
           login({
             token: data.token,
             role: data.user.role,
@@ -38,14 +35,12 @@ const Form = ({ formType, type }) => {
 
           alert("Login Successful!");
 
-          // Redirect logic based on onboarding status
           if (!data.user.isOnboarded) {
             navigate(`/onboard/${data.user.role}`);
           } else {
             navigate("/dash");
           }
         } else {
-          // Registration Flow
           localStorage.setItem("onboardingUserId", data.userId);
           alert("Account created! Let's set up your profile.");
           navigate(`/onboard/${type}`);
