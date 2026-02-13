@@ -19,7 +19,6 @@ function QRScanner() {
     });
 
     const onScanSuccess = async (decodedText) => {
-      // Stop the scanner immediately to prevent double-scans
       scanner.clear(); 
       setScanResult(decodedText);
 
@@ -40,7 +39,6 @@ function QRScanner() {
           navigate("/dash");
         } else {
           alert(data.error || "Verification failed");
-          // Logic to restart scanner if verification fails
           window.location.reload(); 
         }
       } catch (err) {
@@ -49,9 +47,7 @@ function QRScanner() {
       }
     };
 
-    // Use an empty arrow function to ignore 'err' variable warnings
     scanner.render(onScanSuccess, () => {
-      /* Ignore constant scanning attempts */
     });
 
     return () => {

@@ -1,4 +1,3 @@
-/* Container styling */
 .qrscanner-container {
   display: flex;
   flex-direction: column;
@@ -17,7 +16,6 @@
   letter-spacing: 0.5px;
 }
 
-/* The Scanner Wrapper */
 .scanner-wrapper {
   position: relative;
   width: 100%;
@@ -25,16 +23,14 @@
   aspect-ratio: 1 / 1;
   overflow: hidden;
   border-radius: 24px;
-  border: 4px solid #3b82f6; /* Modern Blue */
+  border: 4px solid #3b82f6;
   box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
 }
 
-/* Customizing the Internal Library Elements */
 #qr-reader {
-  border: none !important; /* Remove library border */
+  border: none !important;
 }
 
-/* Container for the selection menu */
 #qr-reader__dashboard_section_csr {
   display: flex;
   flex-direction: column;
@@ -43,7 +39,6 @@
   padding: 15px;
 }
 
-/* The actual Dropdown (Select) element */
 #qr-reader__camera_selection {
   width: 100%;
   max-width: 300px;
@@ -51,11 +46,11 @@
   font-size: 14px !important;
   font-family: inherit;
   color: #ffffff !important;
-  background-color: #1e1e1e !important; /* Matches status box */
-  border: 1px solid #3b82f6 !important; /* Modern blue */
+  background-color: #1e1e1e !important;
+  border: 1px solid #3b82f6 !important;
   border-radius: 12px !important;
   cursor: pointer;
-  appearance: none; /* Removes default browser arrow */
+  appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%233b82f6'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 12px center;
@@ -74,7 +69,6 @@
   background-color: #262626 !important;
 }
 
-/* Styling the options inside the dropdown */
 #qr-reader__camera_selection option {
   background-color: #1e1e1e;
   color: white;
@@ -92,7 +86,6 @@
   margin: 10px 0;
 }
 
-/* Hide the 'Scan Image File' link and the 'OR' separator */
 #qr-reader__dashboard_section_csr > div > span {
   display: none !important;
 }
@@ -101,7 +94,6 @@
   display: none !important;
 }
 
-/* Optional: Clean up the camera permission button */
 #qr-reader__camera_permission_button {
   background-color: #3b82f6;
   color: white;
@@ -111,7 +103,6 @@
   cursor: pointer;
 }
 
-/* Status messaging */
 .status-box {
   margin-top: 30px;
   padding: 15px 25px;

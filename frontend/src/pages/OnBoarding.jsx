@@ -14,9 +14,8 @@ const OnBoarding = ({ type }) => {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    // LOGIC: Get ID from Context if logged in, otherwise get from LocalStorage
     const idToUpdate = user?.userId || localStorage.getItem("onboardingUserId");
-    const token = user?.token; // Might be null if just registered
+    const token = user?.token;
 
     if (!idToUpdate) {
       alert("Session error. Please try signing up again.");
@@ -33,7 +32,6 @@ const OnBoarding = ({ type }) => {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
-            // Only send Authorization header if we actually have a token
             ...(token && { Authorization: `Bearer ${token}` }),
           },
           body: JSON.stringify({
@@ -47,17 +45,14 @@ const OnBoarding = ({ type }) => {
       const data = await response.json();
 
       if (response.ok) {
-        // Clean up the temporary ID
         localStorage.removeItem("onboardingUserId");
 
-        // If they were already logged in, update context
         if (user) {
           localStorage.setItem("isOnboarded", "true");
           setUser({ ...user, isOnboarded: true });
           const target = user.role === "student" ? "/qrscanner" : "/dash";
           navigate(target);
         } else {
-          // If they just registered, they must log in now
           alert("Profile Setup Complete! Please Login.");
           navigate(`/login/${type}`);
         }
@@ -79,7 +74,7 @@ const OnBoarding = ({ type }) => {
         <Link className="logo" to="/">
           ATTSYS2-0
         </Link>
-        <form className="form" onSubmit={handleSubmit}>
+        <form className="form personal-info" onSubmit={handleSubmit}>
           <h1>Personal Info</h1>
           <div className="input-holder input-holder-info">
             <input

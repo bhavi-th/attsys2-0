@@ -1,7 +1,6 @@
 import "../styles/Table.css";
 
 const Table = ({ data }) => {
-  // GUARD: If data is empty or not yet loaded, don't crash the app!
   if (!data || data.length === 0) {
     return (
       <div className="table-container">
@@ -15,7 +14,6 @@ const Table = ({ data }) => {
       <table className="dynamic-table">
         <thead>
           <tr>
-            {/* Safe to access data[0] now because we checked length above */}
             {Object.keys(data[0]).map((key) => (
               <th key={key}>{key}</th>
             ))}

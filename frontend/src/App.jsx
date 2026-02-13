@@ -7,7 +7,7 @@ import {
   useLocation,
   Navigate,
 } from "react-router-dom";
-import { useAuth } from "./hooks/useAuth"; // Import our custom hook
+import { useAuth } from "./hooks/useAuth";
 import NavBar from "./components/NavBar";
 import LandingPage from "./pages/LandingPage";
 import LoginPage from "./pages/LoginPage";
@@ -20,10 +20,9 @@ import OnBoarding from "./pages/OnBoarding";
 const App = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { user } = useAuth(); // Get user state from context
+  const { user } = useAuth();
 
   useEffect(() => {
-    // Define public routes
     const publicPaths = [
       "/",
       "/login/student",
@@ -32,7 +31,6 @@ const App = () => {
       "/signup/teacher",
     ];
 
-    // If user is fully authenticated and onboarded, keep them away from public pages
     if (
       user?.token &&
       user?.isOnboarded &&

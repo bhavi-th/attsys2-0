@@ -2,8 +2,8 @@
   width: 100%;
   max-height: 60dvh;
   font-family: "Lilita One";
-  overflow-y: scroll; /* Hides the vertical scrollbar */
-  scrollbar-width: none;  /* Firefox */
+  overflow-y: scroll;
+  scrollbar-width: none;
   border-top: 2.5px solid black;
   border-bottom: 2.5px solid black;
 }
