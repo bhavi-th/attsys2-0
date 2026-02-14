@@ -1,21 +1,17 @@
 import "./App.css";
 import { useEffect } from "react";
-import {
-  Routes,
-  Route,
-  useNavigate,
-  useLocation,
-  Navigate,
-} from "react-router-dom";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "./hooks/useAuth";
 import NavBar from "./components/NavBar";
 import LandingPage from "./pages/LandingPage";
 import LoginPage from "./pages/LoginPage";
 import SignUp from "./pages/SignUp";
-import HomePage from "./pages/HomePage";
-import QRScanner from "./pages/QRScanner";
+import QRScanner from "./pages/student/QRScanner";
 import ProtectedRoute from "./components/ProtectedRoute";
 import OnBoarding from "./pages/OnBoarding";
+import TeacherDash from "./pages/teacher/TeacherDash";
+import AttendancePage from "./pages/teacher/AttendancePage";
+import StudentDash from "./pages/student/StudentDash";
 
 const App = () => {
   const navigate = useNavigate();
@@ -36,7 +32,7 @@ const App = () => {
       user?.isOnboarded &&
       publicPaths.includes(location.pathname)
     ) {
-      navigate("/dash");
+      navigate(`/dash/${user.role}/${user.userId}`);
     }
   }, [user, navigate, location.pathname]);
 
@@ -48,15 +44,34 @@ const App = () => {
       <Route path="/signup/student" element={<SignUp type="student" />} />
       <Route path="/signup/teacher" element={<SignUp type="teacher" />} />
       <Route
-        path="/dash"
+        path="/onboard/teacher"
+        element={<OnBoarding formType="login" type="teacher" />}
+      />
+      <Route
+        path="/onboard/student"
+        element={<OnBoarding formType="login" type="student" />}
+      />
+      <Route
+        path="/dash/teacher/:id"
         element={
           <ProtectedRoute>
-            <NavBar />
-            {user?.role === "teacher" ? (
-              <HomePage />
-            ) : (
-              <Navigate to="/qrscanner" />
-            )}
+            <TeacherDash />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/attendance/:sectionName"
+        element={
+          <ProtectedRoute>
+            <AttendancePage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/dash/student/:id"
+        element={
+          <ProtectedRoute>
+            <StudentDash />
           </ProtectedRoute>
         }
       />
@@ -68,14 +83,6 @@ const App = () => {
             <QRScanner />
           </ProtectedRoute>
         }
-      />
-      <Route
-        path="/onboard/teacher"
-        element={<OnBoarding formType="login" type="teacher" />}
-      />
-      <Route
-        path="/onboard/student"
-        element={<OnBoarding formType="login" type="student" />}
       />
     </Routes>
   );
