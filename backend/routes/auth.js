@@ -99,4 +99,24 @@ router.patch("/onboarding/:id", async (req, res) => {
   }
 });
 
+router.get("/profile/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const user = await User.findById(id).select("name role email USNSubject sections");
+
+    if (!user) {
+      return res.status(404).json({ error: "User profile not found" });
+    }
+
+    res.status(200).json(user);
+  } catch (err) {
+    console.error("Error fetching profile:", err);
+    if (err.kind === "ObjectId") {
+      return res.status(400).json({ error: "Invalid User ID format" });
+    }
+    res.status(500).json({ error: "Server error fetching profile" });
+  }
+});
+
 export default router;

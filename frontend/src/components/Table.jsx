@@ -1,4 +1,4 @@
-import "../styles/Table.css";
+import "../styles/teacher/Table.css";
 
 const Table = ({ data }) => {
   if (!data || data.length === 0) {

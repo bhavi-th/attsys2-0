@@ -1,7 +1,7 @@
 import express from "express";
 import Attendance from "../models/Attendance.js";
 import { Session } from "../models/Session.js"; 
-import "../models/User.js"; 
+import User from "../models/User.js"; 
 
 const router = express.Router();
 
@@ -12,6 +12,19 @@ router.post("/verify", async (req, res) => {
     const activeSession = await Session.findOne({ passkey });
     if (!activeSession) {
       return res.status(400).json({ error: "Invalid or expired QR code" });
+    }
+
+    const student = await User.findById(studentId);
+    if(!student){
+      return res.status(404).json({ message: "Student not found" });
+    }
+
+    const isCorrectSection = student.sections.includes(activeSession.section);
+
+    if(!isCorrectSection){
+      return res.status(403).json({
+        error: `Access denied: You belong to section ${student.sections.join(", ")}, but this QR is for section ${activeSession.section}.`
+      });
     }
 
     const alreadyMarked = await Attendance.findOne({
@@ -26,6 +39,7 @@ router.post("/verify", async (req, res) => {
     await Attendance.create({
       studentId,
       teacherId: activeSession.teacherId,
+      section: activeSession.section,
       status: "Present"
     });
 
@@ -36,11 +50,11 @@ router.post("/verify", async (req, res) => {
   }
 });
 
-router.get("/list/:teacherId", async (req, res) => {
+router.get("/list/:teacherId/:section", async (req, res) => {
   try {
-    const { teacherId } = req.params;
+    const { teacherId, section } = req.params;
 
-    const records = await Attendance.find({ teacherId })
+    const records = await Attendance.find({ teacherId, section })
       .populate("studentId", "name USNSubject")
       .sort({ date: -1 });
 

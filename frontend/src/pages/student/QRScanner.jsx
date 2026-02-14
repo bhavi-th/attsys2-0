@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Html5QrcodeScanner } from "html5-qrcode";
-import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
-import "../styles/QRScanner.css";
+import "../../styles/student/QRScanner.css";
 
 function QRScanner() {
   const [scanResult, setScanResult] = useState("");
@@ -36,7 +36,7 @@ function QRScanner() {
 
         if (response.ok) {
           alert("✅ Attendance Marked!");
-          navigate("/dash");
+          navigate("/");
         } else {
           alert(data.error || "Verification failed");
           window.location.reload(); 

@@ -18,6 +18,7 @@ mongoose.connect(mongoURI)
 const sessionSchema = new mongoose.Schema({
   passkey: { type: String, required: true, unique: true },
   teacherId: { type: String, required: true },
+  section: { type: String, required: true },
   createdAt: { type: Date, default: Date.now, expires: 10 }
 });
 
@@ -25,17 +26,18 @@ const Session = mongoose.models.Session || mongoose.model("Session", sessionSche
 
 app.get("/qr", async (req, res) => {
   try {
-    const { teacherId } = req.query;
+    const { teacherId, section } = req.query;
 
-    if (!teacherId) {
-      return res.status(400).send("Missing teacherId");
+    if (!teacherId || !section) {
+      return res.status(400).send("Missing teacherId or section");
     }
 
     const passkey = crypto.randomBytes(16).toString("hex");
 
     await Session.create({
       passkey,
-      teacherId
+      teacherId,
+      section
     });
 
     res.setHeader("Content-Type", "image/png");

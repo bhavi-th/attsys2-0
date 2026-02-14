@@ -1,13 +1,16 @@
 import { useState, useEffect, useRef } from "react";
-import { useAuth } from "../hooks/useAuth.js";
-import Table from "../components/Table";
-import "../styles/HomePage.css";
+import { useParams } from "react-router-dom";
+import { useAuth } from "../../hooks/useAuth.js";
+import Table from "../../components/Table";
+import "../../styles/teacher/AttendancePage.css";
 
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import NavBar from "../../components/NavBar.jsx";
 
-const HomePage = () => {
+const AttendancePage = () => {
   const { user } = useAuth();
+  const { sectionName } = useParams();
   const [qr, setQr] = useState(null);
   const [attendanceList, setAttendanceList] = useState([]);
 
@@ -40,10 +43,10 @@ const HomePage = () => {
 
   useEffect(() => {
     const fetchAttendance = async () => {
-      if (user?.role === "teacher" && user?.userId) {
+      if (user?.role === "teacher" && user?.userId && sectionName) {
         try {
           const response = await fetch(
-            `${import.meta.env.VITE_URL}:5000/api/attendance/list/${user.userId}`,
+            `${import.meta.env.VITE_URL}:5000/api/attendance/list/${user.userId}/${sectionName}`,
           );
           if (response.ok) {
             const data = await response.json();
@@ -59,7 +62,7 @@ const HomePage = () => {
     fetchAttendance();
 
     return () => clearInterval(interval);
-  }, [user]);
+  }, [user, sectionName]);
 
   useEffect(() => {
     if (timeLeft > 0) {
@@ -75,7 +78,7 @@ const HomePage = () => {
 
   const generateQR = () => {
     setQr(
-      `${import.meta.env.VITE_URL}:5001/qr?teacherId=${user.userId}&time=${Date.now()}`,
+      `${import.meta.env.VITE_URL}:5001/qr?teacherId=${user.userId}&section=${sectionName}&time=${Date.now()}`,
     );
     setTimeLeft(10);
   };
@@ -100,9 +103,14 @@ const HomePage = () => {
   const sortedAttendance = getSortedData();
 
   return (
-    <div className="HomePage">
+    <>
+      <NavBar/>
+    <div className="AttendancePage">
       {user?.role === "teacher" && (
         <div className="scanner-holder">
+      <h1>
+        Section {sectionName} Attendance
+      </h1>
           {qr && <img src={qr} className="qr-generator" alt="QR Code" />}
           <div className="button-holder">
             <button className="generate-btn" onClick={generateQR}>
@@ -141,7 +149,8 @@ const HomePage = () => {
         </button>
       </div>
     </div>
+    </>
   );
 };
 
-export default HomePage;
+export default AttendancePage;

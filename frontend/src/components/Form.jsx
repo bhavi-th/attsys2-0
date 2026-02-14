@@ -38,7 +38,7 @@ const Form = ({ formType, type }) => {
           if (!data.user.isOnboarded) {
             navigate(`/onboard/${data.user.role}`);
           } else {
-            navigate("/dash");
+            navigate(`/dash/${type}/${data.user.id}`);
           }
         } else {
           localStorage.setItem("onboardingUserId", data.userId);

@@ -11,6 +11,10 @@ const attendanceSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
+  section: {
+    type: String,
+    required: true,
+  },
   date: { type: Date, default: Date.now },
   status: { type: String, default: "Present" },
 });
