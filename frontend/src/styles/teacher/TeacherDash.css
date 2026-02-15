@@ -3,32 +3,59 @@
   font-family: "Lilita One";
 }
 
+.dash-section{
+  font-size: 6vmin;
+  margin-left: 4.5vmin;
+}
+
+.dash-section::after{
+  content: "";
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  height: .5vmin;
+  width: 96dvw;
+  display: block;
+  background-color: #7ed957;
+  border-radius: 1vmin;
+  z-index: 0;
+}
+
+.subjects{
+  margin-inline: 1vw;
+}
+
 .subject{
-  max-width: 35rem;
+  height: fit-content;
+  max-width: 30rem;
+  width: 45vw;
   padding: 1rem;
+  padding-block: 4.5vmin;
   margin: 1rem;
   background-color: #7ed957;
   border-radius: 1.5rem;
 }
 
 .subject-title{
-  margin-block: 0.25rem;
-  margin-left: 1.5rem;
+  margin-block: 0rem 1rem;
   font-size: 5vmin;
   text-align: center;
 }
 
 .section-grid{
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
+  display: grid;
+  justify-items: center;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  row-gap: 2.5vmin;
 }
 
 .attendance-btn{
   background-color: var(--primary-color);
   color: white;
-  height: 7vmin;
-  width: 20vmin;
-  padding: 1vmin;
-  font-size: 2.5vmin;
+  height: 6.5vmin;
+  width: 18vmin;
+  padding: 0rem;
+  border: none;
+  font-size: 2.75vmin;
 }
