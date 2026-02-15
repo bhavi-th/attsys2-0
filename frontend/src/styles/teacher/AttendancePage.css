@@ -14,6 +14,11 @@
   justify-content: center;
 }
 
+.scanner-holder h1{
+  font-family: "Lilita One";
+  font-size: 2.5rem;
+}
+
 .scanner-holder div:last-child{
   width: fit-content;
   display: flex;
@@ -32,7 +37,7 @@
 .scanner-holder .qr-generator{
   height: 250px;
   aspect-ratio: 1/1;
-  background-color: lightgrey;
+  background-color: lightblue;
   border: 3.5px solid black;
   margin: 1.5rem;
 }

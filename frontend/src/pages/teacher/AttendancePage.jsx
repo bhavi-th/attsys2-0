@@ -6,7 +6,6 @@ import "../../styles/teacher/AttendancePage.css";
 
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
-import NavBar from "../../components/NavBar.jsx";
 
 const AttendancePage = () => {
   const { user } = useAuth();
@@ -43,10 +42,10 @@ const AttendancePage = () => {
 
   useEffect(() => {
     const fetchAttendance = async () => {
-      if (user?.role === "teacher" && user?.userId && sectionName) {
+      if (user?.role === "teacher" && user?.id && sectionName) {
         try {
           const response = await fetch(
-            `${import.meta.env.VITE_URL}:5000/api/attendance/list/${user.userId}/${sectionName}`,
+            `${import.meta.env.VITE_URL}:5000/api/attendance/list/${user.id}/${sectionName}`,
           );
           if (response.ok) {
             const data = await response.json();
@@ -78,7 +77,7 @@ const AttendancePage = () => {
 
   const generateQR = () => {
     setQr(
-      `${import.meta.env.VITE_URL}:5001/qr?teacherId=${user.userId}&section=${sectionName}&time=${Date.now()}`,
+      `${import.meta.env.VITE_URL}:5001/qr?teacherId=${user.id}&section=${sectionName}&time=${Date.now()}`,
     );
     setTimeLeft(10);
   };
@@ -104,51 +103,40 @@ const AttendancePage = () => {
 
   return (
     <>
-      <NavBar/>
-    <div className="AttendancePage">
-      {user?.role === "teacher" && (
-        <div className="scanner-holder">
-      <h1>
-        Section {sectionName} Attendance
-      </h1>
-          {qr && <img src={qr} className="qr-generator" alt="QR Code" />}
-          <div className="button-holder">
-            <button className="generate-btn" onClick={generateQR}>
-              Generate QR
-            </button>
-            <button className="stop-btn" onClick={stopSession}>
-              Stop Session
-            </button>
+      <div className="AttendancePage">
+        {user?.role === "teacher" && (
+          <div className="scanner-holder">
+            <h1>Section {sectionName} Attendance</h1>
+            {qr ? <img src={qr} className="qr-generator" /> : <div className="qr-generator" />}
+            <div className="button-holder">
+              <button className="generate-btn" onClick={generateQR}>
+                Generate QR
+              </button>
+              <button className="stop-btn" onClick={stopSession}>
+                Stop Session
+              </button>
+            </div>
           </div>
-        </div>
-      )}
-
-      <div className="student-timer">
-        <div className="timer">
-          {timeLeft > 0
-            ? `QR Expires in: ${timeLeft}s`
-            : user?.role === "teacher"
-              ? "Session Inactive"
-              : "Your Attendance Status"}
-        </div>
-
-        <Table data={sortedAttendance} />
-
-        {attendanceList.length === 0 && (
-          <p className="no-data">
-            No attendance records found for this session.
-          </p>
         )}
 
-        <button
-          className="pdf-btn"
-          onClick={downloadPDF}
-          disabled={attendanceList.length === 0}
-        >
-          Download Report (PDF)
-        </button>
+        <div className="student-timer">
+          <div className="timer">
+            {timeLeft > 0
+              ? `QR Expires in: ${timeLeft}s`
+              : "Session Inactive"}
+          </div>
+
+          <Table data={sortedAttendance} />
+
+          <button
+            className="pdf-btn"
+            onClick={downloadPDF}
+            disabled={attendanceList.length === 0}
+          >
+            Download Report (PDF)
+          </button>
+        </div>
       </div>
-    </div>
     </>
   );
 };

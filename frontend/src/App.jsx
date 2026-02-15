@@ -32,7 +32,7 @@ const App = () => {
       user?.isOnboarded &&
       publicPaths.includes(location.pathname)
     ) {
-      navigate(`/dash/${user.role}/${user.userId}`);
+      navigate(`/dash/${user.role}/${user.id}`);
     }
   }, [user, navigate, location.pathname]);
 
@@ -55,6 +55,7 @@ const App = () => {
         path="/dash/teacher/:id"
         element={
           <ProtectedRoute>
+            <NavBar />
             <TeacherDash />
           </ProtectedRoute>
         }
@@ -63,6 +64,7 @@ const App = () => {
         path="/attendance/:sectionName"
         element={
           <ProtectedRoute>
+            <NavBar />
             <AttendancePage />
           </ProtectedRoute>
         }
@@ -71,6 +73,7 @@ const App = () => {
         path="/dash/student/:id"
         element={
           <ProtectedRoute>
+            <NavBar />
             <StudentDash />
           </ProtectedRoute>
         }

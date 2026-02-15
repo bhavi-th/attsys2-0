@@ -14,7 +14,7 @@ const OnBoarding = ({ type }) => {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    const idToUpdate = user?.userId || localStorage.getItem("onboardingUserId");
+    const idToUpdate = user?.id || localStorage.getItem("onboardingUserId");
     const token = user?.token;
 
     if (!idToUpdate) {

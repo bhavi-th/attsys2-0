@@ -1,14 +1,41 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth.js";
 import ProfilePic from "../assets/profile.svg";
 import "../styles/NavBar.css";
 
-const NavBar = ({ userName }) => {
+const NavBar = () => {
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  const { user, logout } = useAuth();
+  const id = user.id;
 
+  const [userName, setUserName] = useState("Loading...");
   const [showLogout, setShowLogout] = useState(false);
+
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      if (!id) return;
+
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_URL}:5000/api/profile/${id}`,);
+        const data = await response.json();
+
+        if (response.ok) {
+          setUserName(data.name);
+        } else {
+          setUserName("User");
+          console.error("Profile fetch error:", data.error);
+        }
+      } catch (error) {
+        setUserName("User");
+        console.error("Connection error fetching profile:", error);
+      }
+    };
+
+    fetchUserProfile();
+  }, [id]);
 
   function handleLogOut() {
     logout();
@@ -22,7 +49,7 @@ const NavBar = ({ userName }) => {
 
   return (
     <div className="NavBar">
-      <div className="nav-logo">AttSys2-0</div>
+      <div className="nav-logo" onClick={()=>{navigate("/");}}>AttSys2-0</div>
 
       <img
         src={ProfilePic}

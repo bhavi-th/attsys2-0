@@ -28,7 +28,7 @@ function QRScanner() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             passkey: decodedText,
-            studentId: user?.userId,
+            studentId: user?.id,
           }),
         });
 
