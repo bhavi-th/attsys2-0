@@ -24,7 +24,7 @@ const sessionSchema = new mongoose.Schema({
   },
   subject: { type: String, required: true },
   section: { type: String, required: true },
-  expiresAt: { type: Data, required: true }
+  expiresAt: { type: Date, required: true }
 });
 
 sessionSchema.index({expiresAt: 1}, { expireAfterSeconds: 0 });
