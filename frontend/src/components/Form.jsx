@@ -41,7 +41,7 @@ const Form = ({ formType, type }) => {
             navigate(`/dash/${type}/${data.user.id}`);
           }
         } else {
-          localStorage.setItem("onboardingUserId", data.userId);
+          localStorage.setItem("onboardingUserId", data.id);
           alert("Account created! Let's set up your profile.");
           navigate(`/onboard/${type}`);
         }

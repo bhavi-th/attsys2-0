@@ -3,9 +3,7 @@ import "../styles/teacher/Table.css";
 const Table = ({ data }) => {
   if (!data || data.length === 0) {
     return (
-      <div className="table-container">
-        <p className="no-data-msg">Waiting for students to scan...</p>
-      </div>
+    <></>
     );
   }
 

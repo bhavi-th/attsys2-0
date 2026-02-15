@@ -8,23 +8,23 @@ export const AuthProvider = ({ children }) => {
 
     return {
       token,
-      role: localStorage.getItem("userRole"),
+      role: localStorage.getItem("role"),
       isOnboarded: localStorage.getItem("isOnboarded") === "true",
-      userId: localStorage.getItem("userId"),
+      id: localStorage.getItem("id"),
     };
   });
 
   const login = (userData) => {
     localStorage.setItem("token", userData.token);
-    localStorage.setItem("userRole", userData.role);
+    localStorage.setItem("role", userData.role);
     localStorage.setItem("isOnboarded", userData.isOnboarded);
-    localStorage.setItem("userId", userData.id);
+    localStorage.setItem("id", userData.id);
     
     setUser({ 
       token: userData.token, 
       role: userData.role, 
       isOnboarded: userData.isOnboarded,
-      userId: userData.id 
+      id: userData.id 
     });
   };
 
