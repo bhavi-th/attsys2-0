@@ -27,6 +27,9 @@
 }
 
 .scanner-holder button, .pdf-btn{
+  display: flex;
+  align-items: center;
+  gap: 1vmin;
   background-color: var(--primary-color);
   color: white;
   padding: 0.75rem 2rem;
@@ -64,8 +67,7 @@
 
 .pdf-btn{
   margin-top: 1.5rem;
-  width: 50%;
-  align-self: center;
+  align-self: end;
 }
 
 .pdf-btn:disabled {

@@ -38,22 +38,25 @@ const TeacherDash = () => {
     <>
       <div className="TeacherDash">
         <div className="dashboard-container">
-          <div className="subject">
-            <h2 className="subject-title">{subject}</h2>
-            <div className="section-grid">
-              {sections && sections.length > 0 ? (
-                sections.map((sec, index) => (
-                  <button
-                    key={index}
-                    className="attendance-btn"
-                    onClick={() => navigate(`/attendance/${sec}`)}
-                  >
-                    Section {sec}
-                  </button>
-                ))
-              ) : (
-                <p>No sections found for this teacher.</p>
-              )}
+          <span className="dash-section">SUBJECTS</span>
+          <div className="subjects">
+            <div className="subject">
+              <h2 className="subject-title">{subject}</h2>
+              <div className="section-grid">
+                {sections && sections.length > 0 ? (
+                  sections.map((sec, index) => (
+                    <button
+                      key={index}
+                      className="attendance-btn"
+                      onClick={() => navigate(`/attendance/${sec}`)}
+                    >
+                      Section {sec}
+                    </button>
+                  ))
+                ) : (
+                  <p>No sections found for this teacher.</p>
+                )}
+              </div>
             </div>
           </div>
         </div>

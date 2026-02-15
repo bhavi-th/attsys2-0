@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth.js";
 import Table from "../../components/Table";
+import DownloadPDF from "../../assets/download.svg";
 import "../../styles/teacher/AttendancePage.css";
 
 import jsPDF from "jspdf";
@@ -133,7 +134,8 @@ const AttendancePage = () => {
             onClick={downloadPDF}
             disabled={attendanceList.length === 0}
           >
-            Download Report (PDF)
+            <img src={DownloadPDF} />
+            PDF
           </button>
         </div>
       </div>
