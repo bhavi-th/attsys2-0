@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth.js";
 import ProfilePic from "../assets/profile.svg";
@@ -11,7 +11,7 @@ const NavBar = () => {
 
   const [userName, setUserName] = useState("Loading...");
   const [showLogout, setShowLogout] = useState(false);
-
+  const containerRef = useRef(null);
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -19,7 +19,8 @@ const NavBar = () => {
 
       try {
         const response = await fetch(
-          `${import.meta.env.VITE_URL}:5000/api/profile/${id}`,);
+          `${import.meta.env.VITE_URL}:5000/api/profile/${id}`,
+        );
         const data = await response.json();
 
         if (response.ok) {
@@ -47,11 +48,40 @@ const NavBar = () => {
     setShowLogout(!showLogout);
   };
 
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target)
+      ) {
+        setShowLogout(false);
+      }
+    }
+    if (showLogout) {
+      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener("touchstart", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
+    };
+  }, [showLogout]);
+
   return (
     <div className="NavBar">
-      <div className="nav-logo" onClick={()=>{navigate("/");}}>AttSys2-0</div>
+      <div
+        className="nav-logo"
+        onClick={() => {
+          navigate("/");
+        }}
+      >
+        AttSys2-0
+      </div>
 
-      <img
+      <img ref={containerRef}
         src={ProfilePic}
         onClick={toggleLogout}
         style={{ cursor: "pointer" }}
