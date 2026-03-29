@@ -7,19 +7,20 @@ import toast from "react-hot-toast";
 const OnBoarding = ({ type }) => {
   const location = useLocation();
   const [name, setName] = useState("");
-  const [branch, setBranch] = useState(()=>{
+  const [branch, setBranch] = useState(() => {
     if (type === "student" && location.state?.branch) {
       return location.state.branch;
     }
     return "CS";
   });
   const [usn, setUsn] = useState("");
-  const [subjectCount, setSubjectCount] = useState(null);
+  const [subjectCount, setSubjectCount] = useState("");
   const [courseLoads, setCourseLoads] = useState([
     { subject: "", sections: "" },
   ]);
 
   const [studentSection, setStudentSection] = useState("");
+  const [isLoading, setIsLoading] = useState("");
 
   const navigate = useNavigate();
   const { user, setUser } = useAuth();
@@ -49,6 +50,7 @@ const OnBoarding = ({ type }) => {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    setIsLoading(true);
 
     const isValidSection = (str) => {
       const num = Number(str.trim());
@@ -60,11 +62,9 @@ const OnBoarding = ({ type }) => {
         return toast.error("Section must be a number between 1 and 20");
       }
     } else {
-      // Check every section in every course for teachers
       for (let i = 0; i < courseLoads.length; i++) {
         const sectionArray = courseLoads[i].sections.trim().split(/\s+/);
 
-        // If the field is empty or contains invalid numbers
         const allValid =
           sectionArray.length > 0 &&
           sectionArray.every((sec) => isValidSection(sec));
@@ -118,19 +118,23 @@ const OnBoarding = ({ type }) => {
 
       if (response.ok) {
         localStorage.removeItem("onboardingUserId");
+        localStorage.setItem("isOnboarded", "true");
         if (user) {
           localStorage.setItem("isOnboarded", "true");
           setUser({ ...user, isOnboarded: true });
-          navigate(user.role === "student" ? "/qrscanner" : "/dash");
+          navigate(`/dash/${type}/${user.id}`);
         } else {
           toast.success("Profile Setup Complete! Please Login.");
           navigate(`/login/${type}`);
         }
       } else {
         toast.error(data.error || "Update failed");
+        setIsLoading(false);
       }
     } catch (err) {
       console.error("Connection error:", err);
+      toast.error("Connection lost. Please try again.");
+      setIsLoading(false);
     }
   }
 
@@ -144,13 +148,14 @@ const OnBoarding = ({ type }) => {
         <p>To get started, Please fill in your personal information.</p>
       </div>
 
-      <form className="form personal-info" onSubmit={handleSubmit}>
+      <form name="form" className="form personal-info" onSubmit={handleSubmit}>
         <h1>Personal Info</h1>
         <div className="input-holder input-holder-info">
           <input
             placeholder="Full Name"
             type="text"
             required
+            disabled={isLoading}
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
@@ -158,6 +163,7 @@ const OnBoarding = ({ type }) => {
           <select
             className="form-select"
             required
+            disabled={isLoading}
             value={branch}
             onChange={(e) => setBranch(e.target.value)}
           >
@@ -175,6 +181,7 @@ const OnBoarding = ({ type }) => {
                 placeholder="USN"
                 type="text"
                 required
+                disabled={isLoading}
                 value={usn}
                 onChange={(e) => setUsn(e.target.value)}
               />
@@ -182,6 +189,7 @@ const OnBoarding = ({ type }) => {
                 placeholder="Section"
                 type="text"
                 required
+                disabled={isLoading}
                 value={studentSection}
                 onChange={(e) =>
                   setStudentSection(e.target.value.replace(/\s+/g, ""))
@@ -195,6 +203,7 @@ const OnBoarding = ({ type }) => {
                 min="1"
                 max="10"
                 placeholder="How many subjects are you handling (e.g. 2)"
+                disabled={isLoading}
                 value={subjectCount}
                 onChange={handleSubjectCountChange}
               />
@@ -205,6 +214,7 @@ const OnBoarding = ({ type }) => {
                     <input
                       placeholder={`Subject ${index + 1}`}
                       required
+                      disabled={isLoading}
                       value={course.subject}
                       onChange={(e) =>
                         handleCourseChange(index, "subject", e.target.value)
@@ -214,6 +224,7 @@ const OnBoarding = ({ type }) => {
                     <input
                       placeholder="Sections (e.g. A B C)"
                       required
+                      disabled={isLoading}
                       value={course.sections}
                       onChange={(e) =>
                         handleCourseChange(index, "sections", e.target.value)
@@ -228,10 +239,16 @@ const OnBoarding = ({ type }) => {
         </div>
 
         <div className="form-controls">
-          <button type="button" onClick={() => window.location.reload()}>
+          <button
+            type="button"
+            onClick={() => window.location.reload()}
+            disabled={isLoading}
+          >
             Clear
           </button>
-          <button type="submit">Submit</button>
+          <button type="submit" disabled={isLoading}>
+            {isLoading ? "Submitting..." : "Submit"}
+          </button>
         </div>
       </form>
     </div>
