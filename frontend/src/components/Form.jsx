@@ -8,6 +8,7 @@ const Form = ({ formType, type }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [academicYear, setAcademicYear] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
   const { login } = useAuth();
@@ -37,8 +38,9 @@ const Form = ({ formType, type }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    e.value = "Loading...";
 
-const details = type === "student" ? calculateStudentDetails(email) : null;
+    const details = type === "student" ? calculateStudentDetails(email) : null;
 
     if (type === "student" && !details && !academicYear) {
       return toast.error("Please use your college email id");
@@ -47,6 +49,8 @@ const details = type === "student" ? calculateStudentDetails(email) : null;
         return toast.error("Teachers must use there college email id");
       }
     }
+
+    setIsLoading(true);
 
     const endpoint = formType === "Log In" ? "/login" : "/register";
 
@@ -83,27 +87,31 @@ const details = type === "student" ? calculateStudentDetails(email) : null;
           toast.success("Login Successful!");
 
           if (!data.user.isOnboarded) {
-            navigate(`/onboard/${data.user.role}`, { state: { branch: details?.branch }});
+            navigate(`/onboard/${data.user.role}`, {
+              state: { branch: details?.branch },
+            });
           } else {
             navigate(`/dash/${type}/${data.user.id}`);
           }
         } else {
           localStorage.setItem("onboardingUserId", data.id);
           toast.success("Account created! Let's set up your profile.");
-          navigate(`/onboard/${type}`, { state: { branch: details?.branch }});
+          navigate(`/onboard/${type}`, { state: { branch: details?.branch } });
         }
       } else {
         toast.error(data.error || "Something went wrong");
+        setIsLoading(false);
       }
     } catch (error) {
       toast.error("Cannot connect to server. Is it running?");
       console.error("Connection error:", error);
+      setIsLoading(false);
     }
   };
 
   return (
     <div className="Form">
-      <form className="form" onSubmit={handleSubmit}>
+      <form className="form" name="form" onSubmit={handleSubmit}>
         <Link className="logo" to="/">
           ATTSYS2-0
         </Link>
@@ -113,6 +121,7 @@ const details = type === "student" ? calculateStudentDetails(email) : null;
             placeholder="Mail ID"
             type="email"
             required
+            disabled={isLoading}
             value={email}
             onChange={(e) => {
               const val = e.target.value;
@@ -126,6 +135,7 @@ const details = type === "student" ? calculateStudentDetails(email) : null;
             placeholder="Password"
             type="password"
             required
+            disabled={isLoading}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
@@ -133,6 +143,7 @@ const details = type === "student" ? calculateStudentDetails(email) : null;
         <div className="form-controls">
           <button
             type="reset"
+            disabled={isLoading}
             onClick={() => {
               setEmail("");
               setPassword("");
@@ -141,7 +152,9 @@ const details = type === "student" ? calculateStudentDetails(email) : null;
           >
             Clear
           </button>
-          <button type="submit">{formType}</button>
+          <button type="submit" disabled={isLoading}>
+            {isLoading ? "Loading..." : formType}
+          </button>
         </div>
         {formType === "Log In" ? (
           <p>
