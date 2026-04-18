@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import '../../styles/teacher/TeacherDash.css';
 
 const AttendanceHistory = () => {
+    const SESSION_MERGE_WINDOW_MS = 5 * 60 * 1000;
     const { id } = useParams();
     const [courses, setCourses] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -68,11 +69,6 @@ const AttendanceHistory = () => {
     const historyBySubjectAndDate = attendanceHistory.reduce((acc, record) => {
         const recordDate = new Date(record.date);
         const dateKey = recordDate.toISOString().split('T')[0];
-        const timeKey = recordDate.toLocaleTimeString([], {
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-        });
         const subjectKey = record.subject;
 
         if (!acc[subjectKey]) {
@@ -80,25 +76,86 @@ const AttendanceHistory = () => {
         }
 
         if (!acc[subjectKey][dateKey]) {
-            acc[subjectKey][dateKey] = {};
+            acc[subjectKey][dateKey] = [];
         }
 
-        if (!acc[subjectKey][dateKey][timeKey]) {
-            acc[subjectKey][dateKey][timeKey] = [];
-        }
-
-        acc[subjectKey][dateKey][timeKey].push(record);
+        acc[subjectKey][dateKey].push(record);
         return acc;
     }, {});
 
+    const groupedHistoryBySubjectAndDate = Object.entries(historyBySubjectAndDate).reduce(
+        (subjectAcc, [subjectKey, dateMap]) => {
+            subjectAcc[subjectKey] = {};
+
+            Object.entries(dateMap).forEach(([dateKey, records]) => {
+                const sortedRecords = [...records].sort(
+                    (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+                );
+
+                const sessions = [];
+
+                sortedRecords.forEach((record) => {
+                    const currentTime = new Date(record.date).getTime();
+                    const previousSession = sessions[sessions.length - 1];
+                    const recordContextKey = `${record.branch}-${record.section}-${record.semester}`;
+
+                    if (!previousSession) {
+                        sessions.push({
+                            start: currentTime,
+                            end: currentTime,
+                            contextKey: recordContextKey,
+                            records: [record],
+                        });
+                        return;
+                    }
+
+                    const gap = currentTime - previousSession.end;
+                    if (gap <= SESSION_MERGE_WINDOW_MS && previousSession.contextKey === recordContextKey) {
+                        previousSession.end = currentTime;
+                        previousSession.records.push(record);
+                        return;
+                    }
+
+                    sessions.push({
+                        start: currentTime,
+                        end: currentTime,
+                        contextKey: recordContextKey,
+                        records: [record],
+                    });
+                });
+
+                const timeBuckets = {};
+                sessions.forEach((session) => {
+                    const startLabel = new Date(session.start).toLocaleTimeString([], {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: '2-digit',
+                    });
+                    const endLabel = new Date(session.end).toLocaleTimeString([], {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: '2-digit',
+                    });
+                    const label = startLabel === endLabel ? startLabel : `${startLabel} - ${endLabel}`;
+                    timeBuckets[label] = session.records;
+                });
+
+                subjectAcc[subjectKey][dateKey] = timeBuckets;
+            });
+
+            return subjectAcc;
+        },
+        {},
+    );
+
     const historySubjects = courses.map((course) => course.subject);
     const availableDatesForSubject = selectedHistorySubject
-        ? Object.keys(historyBySubjectAndDate[selectedHistorySubject] || {}).sort((a, b) =>
+        ? Object.keys(groupedHistoryBySubjectAndDate[selectedHistorySubject] || {}).sort((a, b) =>
               b.localeCompare(a),
           )
         : [];
     const selectedDateRecords =
-        historyBySubjectAndDate[selectedHistorySubject]?.[selectedHistoryDate] || {};
+        groupedHistoryBySubjectAndDate[selectedHistorySubject]?.[selectedHistoryDate] || {};
 
     if (loading) {
         return <div className="TeacherDash">Loading Attendance History...</div>;
@@ -125,8 +182,9 @@ const AttendanceHistory = () => {
                             <div className="subjects">
                                 {historySubjects.map((subject) => {
                                     const hasHistory = Boolean(
-                                        historyBySubjectAndDate[subject] &&
-                                            Object.keys(historyBySubjectAndDate[subject]).length > 0,
+                                        groupedHistoryBySubjectAndDate[subject] &&
+                                            Object.keys(groupedHistoryBySubjectAndDate[subject]).length >
+                                                0,
                                     );
 
                                     return (
