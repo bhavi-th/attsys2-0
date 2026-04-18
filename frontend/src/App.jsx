@@ -98,6 +98,7 @@ const App = () => {
                     path="/qrscanner"
                     element={
                         <ProtectedRoute>
+                            <NavBar />
                             <QRScanner />
                         </ProtectedRoute>
                     }
