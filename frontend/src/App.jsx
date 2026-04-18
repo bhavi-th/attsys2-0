@@ -15,6 +15,8 @@ import AttendanceHistory from './pages/teacher/AttendanceHistory';
 import StudentDash from './pages/student/StudentDash';
 import { Toaster } from 'react-hot-toast';
 import CreateAssignment from './pages/teacher/CreateAssignment';
+import AssignmentDashboard from './pages/teacher/AssignmentDashboard';
+import EditAssignment from './pages/teacher/EditAssignment';
 
 const App = () => {
     const navigate = useNavigate();
@@ -43,7 +45,6 @@ const App = () => {
                 <Route path="/login/student" element={<LoginPage type="student" />} />
                 <Route path="/login/teacher" element={<LoginPage type="teacher" />} />
                 <Route path="/signup/student" element={<SignUp type="student" />} />
-                {/* <Route path="/teacher/:id/create-assignment" element={<CreateAssignment />} /> */}
                 <Route path="/signup/teacher" element={<SignUp type="teacher" />} />
                 <Route
                     path="/onboard/teacher"
@@ -89,7 +90,7 @@ const App = () => {
                     }
                 />
                 <Route
-                    path="/teacher/:id/create-assignment"
+                    path="/dash/teacher/:id/create-assignment"
                     element={
                         <ProtectedRoute>
                             <NavBar />
@@ -98,11 +99,38 @@ const App = () => {
                     }
                 />
                 <Route
-                    path="/teacher/:id/attendance-history"
+                    path="/dash/teacher/:id/attendance-history"
                     element={
                         <ProtectedRoute>
                             <NavBar />
                             <AttendanceHistory />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/dash/teacher/:id/assignments"
+                    element={
+                        <ProtectedRoute>
+                            <NavBar />
+                            <AssignmentDashboard />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/dash/teacher/:id/edit-assignment/:assignmentId"
+                    element={
+                        <ProtectedRoute>
+                            <NavBar />
+                            <EditAssignment />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/dash/teacher/:id/assignment/:assignmentId"
+                    element={
+                        <ProtectedRoute>
+                            <NavBar />
+                            <AssignmentDashboard />
                         </ProtectedRoute>
                     }
                 />

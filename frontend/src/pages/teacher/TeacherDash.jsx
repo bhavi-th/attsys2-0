@@ -94,14 +94,20 @@ const TeacherDash = () => {
 
                 <span className="dash-section">Assignment</span>
 
-                <Link to={`/teacher/${id}/create-assignment`}>
+                <Link to={`/dash/teacher/${id}/assignments`}>
+                    <button type="button" className="attendance-btn">
+                        Manage Assignments
+                    </button>
+                </Link>
+
+                <Link to={`/dash/teacher/${id}/create-assignment`}>
                     <button type="button" className="attendance-btn">
                         Create Assignment
                     </button>
                 </Link>
 
                 <span className="dash-section">Attendance history</span>
-                <Link to={`/teacher/${id}/attendance-history`}>
+                <Link to={`/dash/teacher/${id}/attendance-history`}>
                     <button type="button" className="attendance-btn">
                         View Attendance History
                     </button>

@@ -6,6 +6,7 @@ import authRoutes from './routes/auth.js';
 import attendanceRoutes from './routes/attendance.js';
 import qrRouter from './routes/qr.js';
 import riskRoutes from './routes/risk.js';
+import assignmentRoutes from './routes/assignments.js';
 
 dotenv.config();
 const app = express();
@@ -33,5 +34,6 @@ app.use('/', qrRouter);
 app.use('/api', authRoutes);
 app.use('/api/attendance', attendanceRoutes);
 app.use('/api/risk', riskRoutes);
+app.use('/api/assignments', assignmentRoutes);
 
 app.listen(PORT, HOST, () => console.log('🚀 Server running on port 5000'));

@@ -1,50 +1,70 @@
-import { useState } from 'react';
-import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import '../../styles/teacher/CreateAssignment.css';
 
-const CreateAssignment = () => {
-    const { id } = useParams();
+const EditAssignment = () => {
+    const { id, assignmentId } = useParams();
     const navigate = useNavigate();
-    const location = useLocation();
-
-    const prefill = location.state || {};
 
     const [form, setForm] = useState({
         title: '',
         description: '',
-        subject: prefill.subject || '',
-        section: prefill.section || '',
-        semester: prefill.semester || '',
+        subject: '',
+        section: '',
+        semester: '',
         dueDate: ''
     });
 
     const [errors, setErrors] = useState({});
     const [touched, setTouched] = useState({});
-
     const [loading, setLoading] = useState(false);
+    const [fetchLoading, setFetchLoading] = useState(true);
+    const [fetchError, setFetchError] = useState(null);
+
+    useEffect(() => {
+        fetchAssignment();
+    }, [assignmentId]);
+
+    const fetchAssignment = async () => {
+        try {
+            const API_BASE_URL = import.meta.env.VITE_PORT
+                ? `${import.meta.env.VITE_URL}:${import.meta.env.VITE_PORT}`
+                : import.meta.env.VITE_URL;
+
+            const res = await fetch(`${API_BASE_URL}/api/assignments/${assignmentId}`);
+            
+            if (res.ok) {
+                const assignment = await res.json();
+                setForm({
+                    title: assignment.title,
+                    description: assignment.description,
+                    subject: assignment.subject,
+                    section: assignment.section,
+                    semester: assignment.semester,
+                    dueDate: new Date(assignment.dueDate).toISOString().split('T')[0]
+                });
+            } else {
+                setFetchError('Failed to fetch assignment');
+            }
+        } catch (err) {
+            setFetchError('Connection error fetching assignment');
+        } finally {
+            setFetchLoading(false);
+        }
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setForm((prev) => ({
-            ...prev,
-            [name]: value
-        }));
+        setForm(prev => ({ ...prev, [name]: value }));
         
-        // Clear error for this field when user starts typing
         if (errors[name]) {
-            setErrors(prev => ({
-                ...prev,
-                [name]: ''
-            }));
+            setErrors(prev => ({ ...prev, [name]: '' }));
         }
     };
 
     const handleBlur = (e) => {
         const { name } = e.target;
-        setTouched(prev => ({
-            ...prev,
-            [name]: true
-        }));
+        setTouched(prev => ({ ...prev, [name]: true }));
         validateField(name, e.target.value);
     };
 
@@ -95,14 +115,7 @@ const CreateAssignment = () => {
                 if (!value) {
                     newErrors.dueDate = 'Due date is required';
                 } else {
-                    const selectedDate = new Date(value);
-                    const today = new Date();
-                    today.setHours(0, 0, 0, 0);
-                    if (selectedDate < today) {
-                        newErrors.dueDate = 'Due date cannot be in the past';
-                    } else {
-                        delete newErrors.dueDate;
-                    }
+                    delete newErrors.dueDate;
                 }
                 break;
         }
@@ -127,7 +140,6 @@ const CreateAssignment = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Validate all fields
         if (!validateForm()) {
             return;
         }
@@ -139,42 +151,50 @@ const CreateAssignment = () => {
                 ? `${import.meta.env.VITE_URL}:${import.meta.env.VITE_PORT}`
                 : import.meta.env.VITE_URL;
 
-            console.log('Creating assignment with data:', {
-                teacherId: id,
-                ...form
-            });
-            console.log('API URL:', `${API_BASE_URL}/api/assignments/create`);
-
-            const res = await fetch(`${API_BASE_URL}/api/assignments/create`, {
-                method: 'POST',
+            const res = await fetch(`${API_BASE_URL}/api/assignments/${assignmentId}`, {
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({
-                    teacherId: id,
-                    ...form
-                })
+                body: JSON.stringify(form)
             });
 
-            console.log('Response status:', res.status);
-            console.log('Response ok:', res.ok);
-
             if (res.ok) {
-                const result = await res.json();
-                console.log('Assignment created successfully:', result);
                 navigate(`/dash/teacher/${id}/assignments`);
             } else {
                 const err = await res.json();
-                console.error('Failed to create assignment:', err);
-                alert(`Failed to create assignment: ${err.error || 'Unknown error'}`);
+                alert(`Failed to update assignment: ${err.error || 'Unknown error'}`);
             }
         } catch (err) {
-            console.error('Error:', err);
-            alert(`Error creating assignment: ${err.message}`);
+            alert(`Error updating assignment: ${err.message}`);
         } finally {
             setLoading(false);
         }
     };
+
+    if (fetchLoading) {
+        return (
+            <div className="create-assignment">
+                <div className="loading-container">
+                    <div className="loading-spinner"></div>
+                    <p>Loading assignment...</p>
+                </div>
+            </div>
+        );
+    }
+
+    if (fetchError) {
+        return (
+            <div className="create-assignment">
+                <div className="error-container">
+                    <p className="error-message">{fetchError}</p>
+                    <button onClick={fetchAssignment} className="retry-btn">
+                        Try Again
+                    </button>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="create-assignment">
@@ -186,12 +206,11 @@ const CreateAssignment = () => {
 
             <div className="form-container">
                 <div className="form-header">
-                    <h2 className="form-title">Create Assignment</h2>
-                    <p className="form-subtitle">Fill in the details to create a new assignment</p>
+                    <h2 className="form-title">Edit Assignment</h2>
+                    <p className="form-subtitle">Update the assignment details</p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="assignment-form" noValidate>
-                    {/* MAIN INFO SECTION */}
                     <div className="form-section">
                         <div className="form-group">
                             <label htmlFor="title" className="form-label">
@@ -242,7 +261,6 @@ const CreateAssignment = () => {
                         </div>
                     </div>
 
-                    {/* META DATA SECTION */}
                     <div className="form-section">
                         <h3 className="section-title">Assignment Details</h3>
                         <div className="form-grid">
@@ -331,7 +349,6 @@ const CreateAssignment = () => {
                                     onBlur={handleBlur}
                                     className={`form-input ${errors.dueDate && touched.dueDate ? 'error' : ''} ${touched.dueDate && !errors.dueDate ? 'success' : ''}`}
                                     required
-                                    min={new Date().toISOString().split('T')[0]}
                                     aria-invalid={errors.dueDate ? 'true' : 'false'}
                                     aria-describedby={errors.dueDate ? 'dueDate-error' : undefined}
                                 />
@@ -344,11 +361,10 @@ const CreateAssignment = () => {
                         </div>
                     </div>
 
-                    {/* ACTIONS */}
                     <div className="form-actions">
                         <button
                             type="button"
-                            onClick={() => navigate(-1)}
+                            onClick={() => navigate(`/dash/teacher/${id}/assignments`)}
                             disabled={loading}
                             className="cancel-btn"
                         >
@@ -362,10 +378,10 @@ const CreateAssignment = () => {
                             {loading ? (
                                 <span className="loading-spinner">
                                     <span className="spinner"></span>
-                                    Creating...
+                                    Updating...
                                 </span>
                             ) : (
-                                'Create Assignment'
+                                'Update Assignment'
                             )}
                         </button>
                     </div>
@@ -375,5 +391,4 @@ const CreateAssignment = () => {
     );
 };
 
-export default CreateAssignment;
-
+export default EditAssignment;

@@ -28,9 +28,14 @@ const AttendancePage = () => {
         const fetchAttendance = async () => {
             if (user?.role === 'teacher' && user?.id && sectionName && subjectName) {
                 try {
-                    const response = await fetch(
-                        `${API_BASE_URL}/api/attendance/list/${user.id}/${branch}/${subjectName}/${sectionName}/${semester}`,
-                    );
+                    let url = `${API_BASE_URL}/api/attendance/list/${user.id}/${branch}/${subjectName}/${sectionName}/${semester}`;
+                    
+                    // Add sessionId to query params if there's an active session
+                    if (sessionId) {
+                        url += `?sessionId=${sessionId}`;
+                    }
+                    
+                    const response = await fetch(url);
                     if (response.ok) {
                         const data = await response.json();
                         setAttendanceList(data);
@@ -44,7 +49,7 @@ const AttendancePage = () => {
         const interval = setInterval(fetchAttendance, 5000);
         fetchAttendance();
         return () => clearInterval(interval);
-    }, [user, branch, sectionName, subjectName, API_BASE_URL, semester]);
+    }, [user, branch, sectionName, subjectName, API_BASE_URL, semester, sessionId]);
 
     const clearSessionTimers = () => {
         if (timerIdRef.current) {
