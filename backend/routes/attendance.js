@@ -146,4 +146,58 @@ router.get('/list/:teacherId/:branch/:subject/:section/:semester', async (req, r
     }
 });
 
+// 3. Fetch Previous Attendance History grouped by date
+router.get('/history/:teacherId/:branch/:subject/:section/:semester', async (req, res) => {
+    try {
+        const { teacherId, branch, subject, semester, section } = req.params;
+
+        const sectionNum = parseInt(section, 10);
+        const semesterNum = parseInt(semester, 10);
+
+        if (isNaN(sectionNum) || isNaN(semesterNum)) {
+            return res.status(400).json({
+                error: `Invalid parameters. Received Section: ${section}, Semester: ${semester}`,
+            });
+        }
+
+        // Find all attendance records for this teacher/subject/section/semester
+        const attendanceRecords = await Attendance.find({
+            teacherId,
+            branch,
+            subject,
+            semester: Number(semester),
+            section: Number(section),
+        }).sort({ date: -1 });
+
+        // Group records by date
+        const groupedByDate = attendanceRecords.reduce((acc, record) => {
+            const dateKey = new Date(record.date).toISOString().split('T')[0];
+            if (!acc[dateKey]) {
+                acc[dateKey] = [];
+            }
+            acc[dateKey].push({
+                studentName: record.studentName,
+                usn: record.usn,
+                status: record.status,
+                date: record.date,
+            });
+            return acc;
+        }, {});
+
+        // Convert to array and sort by date (most recent first)
+        const historyArray = Object.entries(groupedByDate)
+            .map(([date, records]) => ({
+                date,
+                records: records.sort((a, b) => a.usn.localeCompare(b.usn, undefined, { numeric: true })),
+                count: records.length,
+            }))
+            .sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        res.status(200).json(historyArray);
+    } catch (err) {
+        console.error('Fetch History Error:', err);
+        res.status(500).json({ error: 'Failed to fetch attendance history' });
+    }
+});
+
 export default router;

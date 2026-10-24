@@ -1,5 +1,5 @@
 /* Specific styling for the loading state */
-.TeacherDash:not(:has(.dashboard-container)) {
+.TeacherDash.loading {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -13,11 +13,13 @@
 }
 
 @keyframes pulseGlow {
+
     0%,
     100% {
         opacity: 0.5;
         text-shadow: 0 0 2vmin rgba(0, 255, 242, 0.2);
     }
+
     50% {
         opacity: 1;
         text-shadow: 0 0 5vmin rgba(0, 255, 242, 0.6);
@@ -51,6 +53,66 @@
 .dashboard-container {
     max-width: 120vmin;
     margin: 0 auto;
+}
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6vmin;
+    padding-bottom: 4vmin;
+    border-bottom: 0.1vmin solid rgba(255, 255, 255, 0.1);
+}
+
+.header-info {
+    flex: 1;
+}
+
+.welcome-title {
+    font-size: 5vmin;
+    font-weight: 800;
+    margin-bottom: 1vmin;
+    background: linear-gradient(to right, #ffffff, #8892b0);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.branch-info {
+    font-size: 2.5vmin;
+    color: #8892b0;
+    font-weight: 500;
+}
+
+.stats-grid {
+    display: flex;
+    gap: 3vmin;
+}
+
+.stat-card {
+    background: rgba(0, 255, 242, 0.05);
+    border: 0.1vmin solid rgba(0, 255, 242, 0.2);
+    border-radius: 2vmin;
+    padding: 2vmin 3vmin;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 12vmin;
+}
+
+.stat-number {
+    font-size: 4vmin;
+    font-weight: 800;
+    color: #00fff2;
+    line-height: 1;
+}
+
+.stat-label {
+    font-size: 1.5vmin;
+    color: #8892b0;
+    margin-top: 0.5vmin;
+    text-transform: uppercase;
+    letter-spacing: 0.1vmin;
 }
 
 .dash-section {
@@ -87,13 +149,37 @@
     transform: translateY(-0.5vmin);
 }
 
+.subject-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1vmin;
+}
+
 .subject-title {
     font-size: 4.5vmin;
-    margin-bottom: 3vmin;
     font-weight: 700;
     background: linear-gradient(to right, #ffffff, #8892b0);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
+}
+
+.semester-badge {
+    background: rgba(0, 255, 242, 0.1);
+    border: 0.1vmin solid rgba(0, 255, 242, 0.3);
+    color: #00fff2;
+    padding: 0.8vmin 1.5vmin;
+    border-radius: 1vmin;
+    font-size: 1.8vmin;
+    font-weight: 600;
+}
+
+.section-count {
+    font-size: 2vmin;
+    color: #8892b0;
+    margin-bottom: 3vmin;
+    display: block;
 }
 
 .section-grid {
@@ -102,7 +188,38 @@
     gap: 2vmin;
 }
 
-.attendance-btn {
+.section-box {
+    background: rgba(255, 255, 255, 0.02);
+    border: 0.1vmin solid rgba(255, 255, 255, 0.08);
+    border-radius: 1.5vmin;
+    padding: 2.5vmin;
+    transition: all 0.2s ease;
+}
+
+.section-box:hover {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(0, 255, 242, 0.2);
+}
+
+.section-header {
+    margin-bottom: 2vmin;
+    padding-bottom: 1.5vmin;
+    border-bottom: 0.1vmin solid rgba(255, 255, 255, 0.08);
+}
+
+.section-label {
+    font-size: 2.5vmin;
+    font-weight: 600;
+    color: #00fff2;
+}
+
+.section-actions {
+    display: flex;
+    gap: 2vmin;
+}
+
+.attendance-btn,
+.history-btn {
     background: rgba(0, 255, 242, 0.05);
     border: 0.1vmin solid rgba(0, 255, 242, 0.2);
     color: #00fff2;
@@ -115,12 +232,28 @@
     flex: 1;
     min-width: 15vmin;
     text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1vmin;
 }
 
-.attendance-btn:hover {
+.btn-icon {
+    font-size: 2.2vmin;
+}
+
+.attendance-btn:hover,
+.history-btn:hover {
     background: #00fff2;
     color: #000000;
     box-shadow: 0 0 2vmin rgba(0, 255, 242, 0.3);
+}
+
+.no-sections {
+    font-size: 2vmin;
+    color: #8892b0;
+    text-align: center;
+    padding: 2vmin;
 }
 
 .no-data {
@@ -132,12 +265,36 @@
     border: 0.2vmin dashed rgba(255, 255, 255, 0.1);
 }
 
+.no-data-icon {
+    font-size: 8vmin;
+    margin-bottom: 2vmin;
+}
+
 .no-data p {
     font-size: 3vmin;
     color: #8892b0;
 }
 
 @media (max-aspect-ratio: 1/1) {
+    .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 3vmin;
+    }
+
+    .stats-grid {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .welcome-title {
+        font-size: 7vmin;
+    }
+
+    .branch-info {
+        font-size: 3.5vmin;
+    }
+
     .subjects {
         grid-template-columns: 1fr;
     }
@@ -146,12 +303,29 @@
         font-size: 7vmin;
     }
 
-    .attendance-btn {
+    .attendance-btn,
+    .history-btn {
         font-size: 4vmin;
         padding: 3.5vmin;
     }
 
+    .btn-icon {
+        font-size: 4.5vmin;
+    }
+
     .dash-section {
         font-size: 5vmin;
+    }
+
+    .stat-number {
+        font-size: 5vmin;
+    }
+
+    .stat-label {
+        font-size: 2vmin;
+    }
+
+    .section-label {
+        font-size: 4vmin;
     }
 }

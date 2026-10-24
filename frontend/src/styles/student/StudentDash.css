@@ -1,0 +1,78 @@
+.StudentDash {
+    min-height: 100vh;
+    background: #000000;
+    padding-top: calc(8vmin + 5vmin);
+    padding-left: 6vmin;
+    padding-right: 6vmin;
+    padding-bottom: 10vmin;
+    box-sizing: border-box;
+    font-family: 'Inter', system-ui, sans-serif;
+    color: #ffffff;
+}
+
+@media (min-height: 500px) {
+    .StudentDash {
+        padding-top: calc(8vmin + 5vmin);
+    }
+}
+
+@media (max-height: 500px) {
+    .StudentDash {
+        padding-top: calc(40px + 5vmin);
+    }
+}
+
+.dashboard-container {
+    max-width: 120vmin;
+    margin: 0 auto;
+}
+
+.dash-section {
+    display: block;
+    font-size: 2.5vmin;
+    font-weight: 800;
+    letter-spacing: 0.5vmin;
+    color: #00fff2;
+    margin-bottom: 4vmin;
+    opacity: 0.8;
+    border-left: 0.5vmin solid #00fff2;
+    padding-left: 2vmin;
+}
+
+.actions {
+    display: flex;
+    flex-direction: column;
+    gap: 4vmin;
+}
+
+.scanner-btn {
+    background: rgba(0, 255, 242, 0.05);
+    border: 0.1vmin solid rgba(0, 255, 242, 0.2);
+    color: #00fff2;
+    padding: 4vmin 6vmin;
+    border-radius: 2.5vmin;
+    font-size: 3vmin;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    backdrop-filter: blur(2vmin);
+}
+
+.scanner-btn:hover {
+    background: #00fff2;
+    color: #000000;
+    box-shadow: 0 0 2vmin rgba(0, 255, 242, 0.3);
+    transform: translateY(-0.5vmin);
+}
+
+@media (max-aspect-ratio: 1/1) {
+    .scanner-btn {
+        font-size: 5vmin;
+        padding: 5vmin;
+    }
+
+    .dash-section {
+        font-size: 5vmin;
+    }
+}

@@ -46,7 +46,7 @@ function QRScanner() {
 
                 if (response.ok) {
                     toast.success('Attendance Marked!');
-                    navigate('/');
+                    navigate(`/dash/student/${user?.id}`);
                 } else {
                     toast.error(data.error || 'Verification failed');
                     window.location.reload();
@@ -57,7 +57,7 @@ function QRScanner() {
             }
         };
 
-        scanner.render(onScanSuccess, () => {});
+        scanner.render(onScanSuccess, () => { });
 
         return () => {
             scanner.clear().catch((e) => console.warn('Cleanup error', e));

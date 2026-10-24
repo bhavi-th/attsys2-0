@@ -88,13 +88,27 @@ const NavBar = () => {
 
                 {showLogout && (
                     <div id="nav-menu">
-                        <p>Hi, {userName}</p>
+                        <div className="menu-header">
+                            <p className="menu-greeting">Hi, {userName}</p>
+                            <span className={`role-badge ${user?.role}`}>
+                                {user?.role === 'teacher' ? '👨‍🏫 Teacher' : '👨‍🎓 Student'}
+                            </span>
+                        </div>
+                        <button
+                            className="menu-btn dashboard-btn"
+                            onClick={() => navigate(`/dash/${user?.role}/${user?.id}`)}
+                        >
+                            <span className="menu-icon">🏠</span>
+                            Dashboard
+                        </button>
                         {isInstallable && (
-                            <button id="install-btn" onClick={install}>
+                            <button className="menu-btn install-btn" onClick={install}>
+                                <span className="menu-icon">📱</span>
                                 Install App
                             </button>
                         )}
-                        <button id="logout" onClick={handleLogOut}>
+                        <button className="menu-btn logout-btn" onClick={handleLogOut}>
+                            <span className="menu-icon">🚪</span>
                             Logout
                         </button>
                     </div>

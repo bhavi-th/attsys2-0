@@ -52,6 +52,10 @@
     transform: scale(1.1);
 }
 
+.nav-logo:hover {
+    opacity: 0.8;
+}
+
 #nav-menu {
     position: absolute;
     top: calc(100% + 1vmin);
@@ -61,7 +65,7 @@
     border: 0.1vmin solid rgba(255, 255, 255, 0.1);
     border-radius: 1.5vmin;
     padding: 2.5vmin;
-    min-width: 22vmin;
+    min-width: 28vmin;
     display: flex;
     flex-direction: column;
     gap: 1.5vmin;
@@ -69,44 +73,86 @@
     animation: menuDrop 0.25s cubic-bezier(0.1, 0.9, 0.2, 1);
 }
 
-#nav-menu p {
-    font-size: 1.8vmin;
+.menu-header {
+    display: flex;
+    flex-direction: column;
+    gap: 1vmin;
+    padding-bottom: 1.5vmin;
+    border-bottom: 0.1vmin solid rgba(255, 255, 255, 0.1);
+}
+
+.menu-greeting {
+    font-size: 2vmin;
     color: #ffffff;
     font-weight: 600;
     margin: 0;
-    padding-bottom: 1vmin;
-    border-bottom: 0.1vmin solid rgba(255, 255, 255, 0.1);
     white-space: nowrap;
 }
 
-#logout,
-#install-btn {
+.role-badge {
+    font-size: 1.5vmin;
+    font-weight: 600;
+    padding: 0.5vmin 1.2vmin;
+    border-radius: 0.8vmin;
+    display: inline-block;
+    align-self: flex-start;
+}
+
+.role-badge.teacher {
+    background: rgba(0, 255, 242, 0.1);
+    border: 0.1vmin solid rgba(0, 255, 242, 0.3);
+    color: #00fff2;
+}
+
+.role-badge.student {
+    background: rgba(255, 183, 0, 0.1);
+    border: 0.1vmin solid rgba(255, 183, 0, 0.3);
+    color: #ffb700;
+}
+
+.menu-btn {
     width: 100%;
-    padding: 1.2vmin;
+    padding: 1.5vmin;
+    background: rgba(255, 255, 255, 0.05);
+    border: 0.1vmin solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    border-radius: 0.8vmin;
+    font-size: 1.8vmin;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 1vmin;
+    text-align: left;
+}
+
+.menu-icon {
+    font-size: 2vmin;
+}
+
+.dashboard-btn:hover {
+    background: rgba(0, 255, 242, 0.1);
+    border-color: rgba(0, 255, 242, 0.3);
+    color: #00fff2;
+}
+
+.install-btn:hover {
+    background: rgba(100, 200, 255, 0.1);
+    border-color: rgba(100, 200, 255, 0.3);
+    color: #64c8ff;
+}
+
+.logout-btn {
     background: rgba(255, 71, 71, 0.08);
     border: 0.1vmin solid rgba(255, 71, 71, 0.2);
     color: #ff4747;
-    border-radius: 0.8vmin;
-    font-size: 1.8vmin;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    text-transform: uppercase;
 }
 
-#logout:hover {
+.logout-btn:hover {
     background: #ff4747;
     color: #ffffff;
     box-shadow: 0 0 2vmin rgba(255, 71, 71, 0.4);
-}
-
-#install-btn {
-    color: var(--text-color);
-}
-
-#install-btn:hover {
-    background-color: var(--text-color);
-    color: var(--bg-color);
 }
 
 @keyframes menuDrop {
@@ -114,6 +160,7 @@
         opacity: 0;
         transform: translateY(-0.5vmin);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -136,14 +183,21 @@
     }
 
     #nav-menu {
-        min-width: 40vmin;
+        min-width: 45vmin;
         gap: 2.5vmin;
         padding: 4vmin;
     }
 
-    #nav-menu p,
-    #logout,
-    #install-btn {
+    .menu-greeting,
+    .menu-btn {
         font-size: 3.5vmin;
+    }
+
+    .role-badge {
+        font-size: 2.5vmin;
+    }
+
+    .menu-icon {
+        font-size: 4vmin;
     }
 }

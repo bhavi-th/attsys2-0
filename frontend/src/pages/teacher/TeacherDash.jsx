@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../hooks/useAuth';
 import '../../styles/teacher/TeacherDash.css';
 
 const TeacherDash = () => {
     const navigate = useNavigate();
     const { id } = useParams();
+    const { user } = useAuth();
 
     const [courses, setCourses] = useState([]);
     const [branch, setBranch] = useState('');
@@ -37,42 +39,84 @@ const TeacherDash = () => {
         fetchUserProfile();
     }, [id]);
 
-    if (loading) return <div className="TeacherDash">Loading Dashboard...</div>;
+    const totalSections = courses.reduce((acc, course) => acc + (course.sections?.length || 0), 0);
+
+    if (loading) return <div className="TeacherDash loading">Loading Dashboard...</div>;
 
     return (
         <div className="TeacherDash">
             <div className="dashboard-container">
+                <div className="dashboard-header">
+                    <div className="header-info">
+                        <h1 className="welcome-title">Welcome back, {user?.name || 'Teacher'}</h1>
+                        <p className="branch-info">{branch} Branch</p>
+                    </div>
+                    <div className="stats-grid">
+                        <div className="stat-card">
+                            <span className="stat-number">{courses.length}</span>
+                            <span className="stat-label">Subjects</span>
+                        </div>
+                        <div className="stat-card">
+                            <span className="stat-number">{totalSections}</span>
+                            <span className="stat-label">Sections</span>
+                        </div>
+                    </div>
+                </div>
+
                 <span className="dash-section">SUBJECTS</span>
 
                 <div className="subjects">
                     {courses.length > 0 ? (
                         courses.map((course, courseIndex) => (
                             <div className="subject" key={courseIndex}>
-                                <h2 className="subject-title">{course.subject}</h2>
+                                <div className="subject-header">
+                                    <h2 className="subject-title">{course.subject}</h2>
+                                    <span className="semester-badge">Sem {course.semester}</span>
+                                </div>
+                                <span className="section-count">{course.sections?.length || 0} sections</span>
 
                                 <div className="section-grid">
                                     {course.sections && course.sections.length > 0 ? (
                                         course.sections.map((sec, secIndex) => (
-                                            <button
-                                                key={secIndex}
-                                                className="attendance-btn"
-                                                onClick={() =>
-                                                    navigate(
-                                                        `/attendance/${branch}/${course.subject}/${sec}/${course.semester}`,
-                                                    )
-                                                }
-                                            >
-                                                Section {sec}
-                                            </button>
+                                            <div key={secIndex} className="section-box">
+                                                <div className="section-header">
+                                                    <span className="section-label">Section {sec}</span>
+                                                </div>
+                                                <div className="section-actions">
+                                                    <button
+                                                        className="attendance-btn"
+                                                        onClick={() =>
+                                                            navigate(
+                                                                `/attendance/${branch}/${course.subject}/${sec}/${course.semester}`,
+                                                            )
+                                                        }
+                                                    >
+                                                        <span className="btn-icon">📊</span>
+                                                        Mark Attendance
+                                                    </button>
+                                                    <button
+                                                        className="history-btn"
+                                                        onClick={() =>
+                                                            navigate(
+                                                                `/history/${id}/${branch}/${course.subject}/${sec}/${course.semester}`,
+                                                            )
+                                                        }
+                                                    >
+                                                        <span className="btn-icon">📋</span>
+                                                        View History
+                                                    </button>
+                                                </div>
+                                            </div>
                                         ))
                                     ) : (
-                                        <p>No sections assigned</p>
+                                        <p className="no-sections">No sections assigned</p>
                                     )}
                                 </div>
                             </div>
                         ))
                     ) : (
                         <div className="no-data">
+                            <div className="no-data-icon">📚</div>
                             <p>No subjects found. Please complete your onboarding.</p>
                         </div>
                     )}
