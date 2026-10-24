@@ -1,6 +1,6 @@
 .StudentDash {
     min-height: 100vh;
-    background: #000000;
+    background: linear-gradient(180deg, #0a0a12 0%, #000000 100%);
     padding-top: calc(8vmin + 5vmin);
     padding-left: 6vmin;
     padding-right: 6vmin;
@@ -66,6 +66,125 @@
     transform: translateY(-0.5vmin);
 }
 
+.attendance-history {
+    margin-top: 2vmin;
+}
+
+.attendance-list {
+    display: flex;
+    flex-direction: column;
+    gap: 3vmin;
+}
+
+.attendance-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 0.1vmin solid rgba(255, 255, 255, 0.1);
+    border-radius: 2vmin;
+    padding: 3vmin;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.attendance-card:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(0, 255, 242, 0.3);
+    transform: translateY(-0.5vmin);
+    box-shadow: 0 4px 20px rgba(0, 255, 242, 0.1);
+}
+
+.subject-info {
+    margin-bottom: 2vmin;
+}
+
+.subject-name {
+    font-size: 2.5vmin;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0 0 0.5vmin 0;
+}
+
+.subject-details {
+    font-size: 1.8vmin;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0;
+}
+
+.attendance-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5vmin;
+}
+
+.percentage-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.percentage {
+    font-size: 3.5vmin;
+    font-weight: 800;
+}
+
+.status-badge {
+    padding: 0.5vmin 1.5vmin;
+    border-radius: 1vmin;
+    font-size: 1.5vmin;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.2vmin;
+}
+
+.progress-bar-container {
+    width: 100%;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 1vmin;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 0.5vmin;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    border-radius: 0.5vmin;
+    transition: width 0.8s ease;
+}
+
+.attendance-details {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.8vmin;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.loading-state,
+.error-state,
+.empty-state {
+    text-align: center;
+    padding: 8vmin;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 2vmin;
+}
+
+.spinner {
+    width: 4vmin;
+    height: 4vmin;
+    border: 0.4vmin solid rgba(0, 255, 242, 0.3);
+    border-top-color: #00fff2;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 2vmin;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
 @media (max-aspect-ratio: 1/1) {
     .scanner-btn {
         font-size: 5vmin;
@@ -74,5 +193,31 @@
 
     .dash-section {
         font-size: 5vmin;
+    }
+
+    .subject-name {
+        font-size: 4vmin;
+    }
+
+    .subject-details {
+        font-size: 3vmin;
+    }
+
+    .percentage {
+        font-size: 5vmin;
+    }
+
+    .status-badge {
+        font-size: 2.5vmin;
+    }
+
+    .attendance-details {
+        font-size: 3vmin;
+    }
+
+    .loading-state,
+    .error-state,
+    .empty-state {
+        font-size: 3vmin;
     }
 }

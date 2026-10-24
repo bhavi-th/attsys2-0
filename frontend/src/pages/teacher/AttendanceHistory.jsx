@@ -45,11 +45,15 @@ const AttendanceHistory = () => {
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
-        return date.toLocaleDateString('en-US', {
+        return date.toLocaleString('en-IN', {
             weekday: 'long',
             year: 'numeric',
             month: 'long',
             day: 'numeric',
+            hour: 'numeric',
+            minute: '2-digit',
+            hour12: true,
+            timeZone: 'Asia/Kolkata',
         });
     };
 
@@ -78,7 +82,7 @@ const AttendanceHistory = () => {
                 ) : (
                     <div className="history-list">
                         {history.map((session, index) => (
-                            <div key={index} className="history-session">
+                            <div key={session.sessionId || session.date || index} className="history-session">
                                 <div className="session-header">
                                     <h2 className="session-date">{formatDate(session.date)}</h2>
                                     <span className="session-count">{session.count} students</span>

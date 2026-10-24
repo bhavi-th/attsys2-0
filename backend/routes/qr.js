@@ -2,6 +2,7 @@ import express from 'express';
 import qrcode from 'qrcode';
 import crypto from 'crypto';
 import { Session } from '../models/Session.js';
+import { getOrCreateClassSession } from '../utils/classSession.js';
 
 const router = express.Router();
 
@@ -19,6 +20,14 @@ router.get('/qr', async (req, res) => {
         // This allows the QRScanner to extract it using .split("|")
         const complexPayload = `${branch}|${subject}|${section}|${passkey}|${semester}|${Date.now()}`;
 
+        const classSession = await getOrCreateClassSession({
+            teacherId,
+            branch,
+            subject,
+            section,
+            semester,
+        });
+
         await Session.create({
             passkey,
             teacherId,
@@ -26,7 +35,8 @@ router.get('/qr', async (req, res) => {
             section: Number(section), // Ensure it's a number for DB consistency
             semester: Number(semester), // Ensure it's a number for DB consistency
             branch,
-            expiresAt: new Date(Date.now() + 60 * 1000), // 1 minute expiry
+            classSessionId: classSession._id,
+            expiresAt: new Date(Date.now() + 60 * 1000), // 1 minute QR expiry
         });
 
         res.setHeader('Content-Type', 'image/png');

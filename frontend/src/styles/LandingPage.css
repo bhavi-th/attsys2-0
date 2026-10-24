@@ -11,6 +11,10 @@
     scroll-behavior: smooth;
 }
 
+.LandingPage.menu-open {
+    overflow: hidden;
+}
+
 .LandingPage::before {
     content: '';
     position: fixed;
@@ -97,12 +101,71 @@
     align-items: center;
 }
 
+.mobile-menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    z-index: 1001;
+}
+
+.hamburger {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 25px;
+}
+
+.hamburger span {
+    width: 100%;
+    height: 2px;
+    background: #ffffff;
+    transition: all 0.3s ease;
+}
+
+.hamburger.open span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger.open span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger.open span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+}
+
+.mobile-menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    opacity: 0;
+    animation: fadeIn 0.3s ease forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
 .nav-link {
     color: rgba(255, 255, 255, 0.8);
     text-decoration: none;
     font-weight: 500;
     transition: color 0.3s ease;
     font-size: 0.95rem;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .nav-link:hover {
@@ -287,13 +350,13 @@
 
 .card-1 {
     right: 5%;
-    top: 75%;
+    bottom: 20%;
     transform: translateY(-50%) rotate(-5deg);
 }
 
 .card-2 {
-    right: 75%;
-    top: 60%;
+    left: 5%;
+    top: 40%;
     transform: translateY(-50%) rotate(3deg);
     width: 320px;
     height: 220px;
@@ -448,6 +511,8 @@
     text-transform: uppercase;
     position: relative;
     overflow: hidden;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .landing-link::before {
@@ -1232,37 +1297,88 @@
         margin: 1rem 0;
     }
 
-    .tech-cards {
-        grid-template-columns: repeat(3, 1fr);
-    }
-}
-
-@media (max-width: 768px) {
-    .nav-links {
-        gap: 1rem;
-    }
-
-    .nav-link:not(.nav-cta) {
-        display: none;
-    }
-
     .hero-section {
-        padding: 6rem 1.5rem 3rem;
+        padding: 6rem 2rem 4rem;
     }
 
     .hero-content {
         max-width: 100%;
     }
 
+    .hero-visual {
+        opacity: 0.5;
+    }
+
+    .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .benefits-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .mobile-menu-toggle {
+        display: block;
+    }
+
+    .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 100%;
+        max-width: 300px;
+        height: 100vh;
+        background: rgba(10, 10, 18, 0.98);
+        backdrop-filter: blur(20px);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+        transition: right 0.3s ease;
+        z-index: 1000;
+        border-left: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .nav-links.mobile-open {
+        right: 0;
+    }
+
+    .nav-link {
+        font-size: 1.2rem;
+        padding: 1rem 2rem;
+        min-height: 48px;
+        display: flex;
+        align-items: center;
+    }
+
+    .nav-cta {
+        padding: 1rem 2.5rem;
+        font-size: 1.1rem;
+        min-height: 48px;
+    }
+
+    .hero-section {
+        padding: 7rem 1.5rem 4rem;
+    }
+
+    .hero-content {
+        max-width: 100%;
+        text-align: center;
+    }
+
     .hero-actions,
     .cta-actions {
         flex-direction: column;
         align-items: stretch;
+        gap: 1rem;
     }
 
     .landing-link {
         text-align: center;
         padding: 1.2rem 2rem;
+        width: 100%;
     }
 
     .hero-trust {
@@ -1283,13 +1399,7 @@
         grid-template-columns: 1fr;
     }
 
-    .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
 
-    .tech-cards {
-        grid-template-columns: repeat(2, 1fr);
-    }
 
     .benefits-grid {
         grid-template-columns: 1fr;
@@ -1313,11 +1423,44 @@
         width: 100px;
         height: 100px;
     }
+
+    .section-container {
+        padding: 5rem 1.5rem;
+    }
+
+    .features-section,
+    .process-section,
+    .benefits-section,
+    .cta-section {
+        padding: 5rem 1.5rem;
+    }
+
+    .about-cards-stack {
+        grid-template-columns: 1fr;
+        max-width: 350px;
+    }
+
+    .about-card {
+        width: 100%;
+        height: 280px;
+    }
+
+    .process-step {
+        min-width: 100%;
+    }
+
+    .step-number {
+        font-size: 3rem;
+    }
 }
 
 @media (max-width: 480px) {
     .section-container {
-        padding: 4rem 1.5rem;
+        padding: 4rem 1rem;
+    }
+
+    .hero-section {
+        padding: 6rem 1rem 3rem;
     }
 
     .hero-title {
@@ -1329,17 +1472,13 @@
         padding: 0.4rem 1rem;
     }
 
-    .about-text,
-    .feature-description {
+    .hero-subtitle {
         font-size: 1rem;
     }
 
-    .stats-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .tech-cards {
-        grid-template-columns: repeat(2, 1fr);
+    .about-text,
+    .feature-description {
+        font-size: 1rem;
     }
 
     .about-card {
@@ -1351,10 +1490,186 @@
     .nav-logo {
         font-size: 1.2rem;
     }
+
+    .nav-links {
+        max-width: 250px;
+    }
+
+    .nav-link {
+        font-size: 1.1rem;
+    }
+
+    .nav-cta {
+        font-size: 1rem;
+        padding: 0.9rem 2rem;
+    }
+
+    .landing-link {
+        padding: 1rem 1.5rem;
+        font-size: 1rem;
+    }
+
+    .section-title {
+        font-size: 1.8rem;
+    }
+
+    .feature-title,
+    .benefit-title {
+        font-size: 1.3rem;
+    }
+
+    .step-title {
+        font-size: 1.2rem;
+    }
+
+    .cta-title {
+        font-size: 1.8rem;
+    }
+
+    .cta-subtitle {
+        font-size: 1.1rem;
+    }
+
+    .features-section,
+    .process-section,
+    .benefits-section,
+    .cta-section {
+        padding: 4rem 1rem;
+    }
+
+    .feature-card,
+    .benefit-card {
+        padding: 2rem 1.5rem;
+    }
+
+    .step-card {
+        padding: 1.5rem;
+    }
 }
 
 @media (max-width: 400px) {
-    .tech-cards {
-        grid-template-columns: 1fr;
+    .nav-logo {
+        font-size: 1rem;
+    }
+
+    .hero-badge {
+        font-size: 0.75rem;
+        padding: 0.35rem 0.8rem;
+    }
+
+    .landing-link {
+        padding: 0.9rem 1.2rem;
+        font-size: 0.95rem;
+    }
+
+    .btn-icon {
+        margin-right: 0.4rem;
+    }
+
+    .feature-icon-wrapper,
+    .benefit-visual {
+        width: 50px;
+        height: 50px;
+    }
+
+    .feature-icon,
+    .benefit-icon {
+        font-size: 1.8rem;
+    }
+
+    .about-card-icon {
+        font-size: 3rem;
+    }
+
+    .about-card {
+        padding: 2rem 1.5rem;
+        height: 260px;
+    }
+
+    .step-icon {
+        font-size: 2rem;
+    }
+
+    .section-label {
+        font-size: 0.75rem;
+        padding: 0.35rem 0.8rem;
+    }
+}
+
+@media (min-width: 1400px) {
+    .hero-section {
+        padding: 10rem 2rem 6rem;
+    }
+
+    .section-container {
+        padding: 8rem 2rem;
+    }
+
+    .features-section,
+    .process-section,
+    .benefits-section,
+    .cta-section {
+        padding: 8rem 2rem;
+    }
+}
+
+@media (max-height: 600px) and (orientation: landscape) {
+    .hero-section {
+        padding: 4rem 2rem 2rem;
+        min-height: auto;
+    }
+
+    .hero-title {
+        font-size: 2rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .hero-actions {
+        margin-bottom: 1rem;
+    }
+
+    .hero-trust {
+        margin-top: 1.5rem;
+    }
+
+    .section-container {
+        padding: 3rem 2rem;
+    }
+
+    .features-section,
+    .process-section,
+    .benefits-section,
+    .cta-section {
+        padding: 3rem 2rem;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .hero-section {
+        padding: 7rem 2rem 4rem;
+    }
+
+    .hero-content {
+        max-width: 650px;
+    }
+
+    .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .benefits-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .about-cards-stack {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .process-step {
+        min-width: 250px;
     }
 }

@@ -11,6 +11,11 @@ const sessionSchema = new mongoose.Schema({
     subject: { type: String, required: true },
     section: { type: Number, required: true },
     semester: { type: Number, required: true },
+    classSessionId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'ClassSession',
+        required: true,
+    },
     expiresAt: { type: Date, required: true },
 });
 

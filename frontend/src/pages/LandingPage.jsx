@@ -6,12 +6,11 @@ const LandingPage = () => {
     const [scrollY, setScrollY] = useState(0);
     const [isVisible, setIsVisible] = useState({});
     const [activeSection, setActiveSection] = useState('');
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const sectionRefs = {
         hero: useRef(null),
         about: useRef(null),
         features: useRef(null),
-        stats: useRef(null),
-        tech: useRef(null),
         process: useRef(null),
         benefits: useRef(null),
         cta: useRef(null),
@@ -72,6 +71,11 @@ const LandingPage = () => {
                 block: 'start'
             });
         }
+        setMobileMenuOpen(false);
+    };
+
+    const toggleMobileMenu = () => {
+        setMobileMenuOpen(!mobileMenuOpen);
     };
 
     const stats = [
@@ -82,11 +86,18 @@ const LandingPage = () => {
     ];
 
     return (
-        <div className="LandingPage">
+        <div className={`LandingPage ${mobileMenuOpen ? 'menu-open' : ''}`}>
             <nav className={`landing-nav ${scrollY > 50 ? 'scrolled' : ''}`}>
                 <div className="nav-container">
                     <div className="nav-logo">ATTSYS 2.0</div>
-                    <div className="nav-links">
+                    <button className="mobile-menu-toggle" onClick={toggleMobileMenu} aria-label="Toggle menu">
+                        <span className={`hamburger ${mobileMenuOpen ? 'open' : ''}`}>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </span>
+                    </button>
+                    <div className={`nav-links ${mobileMenuOpen ? 'mobile-open' : ''}`}>
                         <a
                             href="#about"
                             className={`nav-link ${activeSection === 'about' ? 'active' : ''}`}
@@ -106,6 +117,7 @@ const LandingPage = () => {
                         </Link>
                     </div>
                 </div>
+                {mobileMenuOpen && <div className="mobile-menu-overlay" onClick={toggleMobileMenu}></div>}
             </nav>
 
             <div className="hero-section" ref={sectionRefs.hero}>

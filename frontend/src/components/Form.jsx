@@ -119,38 +119,56 @@ const Form = ({ formType, type }) => {
 
     return (
         <div className="Form">
+            <div className="background-effects">
+                <div className="glow-blob glow-1"></div>
+                <div className="glow-blob glow-2"></div>
+                <div className="grid-pattern"></div>
+            </div>
             <form className="form" name="form" onSubmit={handleSubmit}>
-                <Link className="logo" to="/">
-                    ATTSYS2-0
-                </Link>
+                <div className="form-header">
+                    <Link className="logo" to="/">
+                        ATTSYS2-0
+                    </Link>
+                    <div className="role-badge">
+                        <span className="role-icon">{type === 'teacher' ? '👨‍🏫' : '👨‍🎓'}</span>
+                        <span className="role-text">{type === 'teacher' ? 'Teacher' : 'Student'}</span>
+                    </div>
+                </div>
                 <h1>{formType}</h1>
                 <div className="input-holder">
-                    <input
-                        placeholder="Mail ID"
-                        type="email"
-                        required
-                        disabled={isLoading}
-                        value={email}
-                        onChange={(e) => {
-                            const val = e.target.value;
-                            setEmail(val);
-                            if (type === 'student') {
-                                setAcademicYear(calculateStudentDetails(val));
-                            }
-                        }}
-                    />
-                    <input
-                        placeholder="Password"
-                        type="password"
-                        required
-                        disabled={isLoading}
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
+                    <div className="input-group">
+                        <label className="input-label">Email Address</label>
+                        <input
+                            placeholder="Enter your email"
+                            type="email"
+                            required
+                            disabled={isLoading}
+                            value={email}
+                            onChange={(e) => {
+                                const val = e.target.value;
+                                setEmail(val);
+                                if (type === 'student') {
+                                    setAcademicYear(calculateStudentDetails(val));
+                                }
+                            }}
+                        />
+                    </div>
+                    <div className="input-group">
+                        <label className="input-label">Password</label>
+                        <input
+                            placeholder="Enter your password"
+                            type="password"
+                            required
+                            disabled={isLoading}
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
+                    </div>
                 </div>
                 <div className="form-controls">
                     <button
                         type="reset"
+                        className="btn-secondary"
                         disabled={isLoading}
                         onClick={() => {
                             setEmail('');
@@ -160,25 +178,30 @@ const Form = ({ formType, type }) => {
                     >
                         Clear
                     </button>
-                    <button type="submit" disabled={isLoading}>
-                        {isLoading ? 'Loading...' : formType}
+                    <button type="submit" className="btn-primary" disabled={isLoading}>
+                        {isLoading ? (
+                            <span className="loading-spinner">
+                                <span className="spinner"></span>
+                                Loading...
+                            </span>
+                        ) : (
+                            formType
+                        )}
                     </button>
                 </div>
                 {formType === 'Log In' ? (
-                    <p>
-                        Don't have an account? Click{' '}
+                    <p className="form-footer">
+                        Don't have an account?{' '}
                         <Link to={type === 'teacher' ? '/signup/teacher' : '/signup/student'}>
-                            here
-                        </Link>{' '}
-                        to signup
+                            Sign up here
+                        </Link>
                     </p>
                 ) : (
-                    <p>
-                        Already have an account? Click{' '}
+                    <p className="form-footer">
+                        Already have an account?{' '}
                         <Link to={type === 'teacher' ? '/login/teacher' : '/login/student'}>
-                            here
-                        </Link>{' '}
-                        to login
+                            Log in here
+                        </Link>
                     </p>
                 )}
             </form>
