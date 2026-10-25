@@ -87,7 +87,7 @@ const TeacherDash = () => {
                                                         className="attendance-btn"
                                                         onClick={() =>
                                                             navigate(
-                                                                `/attendance/${branch}/${course.subject}/${sec}/${course.semester}`,
+                                                                `/attendance/${branch}/${encodeURIComponent(course.subject)}/${sec}/${course.semester}`,
                                                             )
                                                         }
                                                     >
@@ -98,7 +98,7 @@ const TeacherDash = () => {
                                                         className="history-btn"
                                                         onClick={() =>
                                                             navigate(
-                                                                `/history/${id}/${branch}/${course.subject}/${sec}/${course.semester}`,
+                                                                `/history/${id}/${branch}/${encodeURIComponent(course.subject)}/${sec}/${course.semester}`,
                                                             )
                                                         }
                                                     >

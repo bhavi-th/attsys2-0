@@ -6,7 +6,8 @@ import '../../styles/teacher/AttendanceHistory.css';
 const AttendanceHistory = () => {
     const navigate = useNavigate();
     const { user } = useAuth();
-    const { branch, subject, section, semester } = useParams();
+    const { branch, subject: encodedSubject, section, semester } = useParams();
+    const subject = decodeURIComponent(encodedSubject);
 
     const [history, setHistory] = useState([]);
     const [loading, setLoading] = useState(true);

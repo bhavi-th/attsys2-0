@@ -8,7 +8,8 @@ const router = express.Router();
 
 router.get('/qr', async (req, res) => {
     try {
-        const { teacherId, branch, section, subject, semester } = req.query;
+        const { teacherId, branch, section, subject: encodedSubject, semester } = req.query;
+        const subject = decodeURIComponent(encodedSubject);
 
         if (!teacherId || !section || !subject || !branch || !semester) {
             return res.status(400).send('Missing teacherId, branch, section, semester or subject');

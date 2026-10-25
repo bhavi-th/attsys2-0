@@ -13,7 +13,8 @@ const AttendancePage = () => {
         ? `${import.meta.env.VITE_URL}:${import.meta.env.VITE_PORT}`
         : import.meta.env.VITE_URL;
     const { user } = useAuth();
-    const { branch, subject: subjectName, sectionName, semester } = useParams();
+    const { branch, subject: encodedSubject, sectionName, semester } = useParams();
+    const subjectName = decodeURIComponent(encodedSubject);
 
     const [qr, setQr] = useState(null);
     const [attendanceList, setAttendanceList] = useState([]);
@@ -47,7 +48,7 @@ const AttendancePage = () => {
         if (timerIdRef.current) clearInterval(timerIdRef.current);
 
         const baseUrl = `${API_BASE_URL}/qr`;
-        const params = `teacherId=${user.id}&branch=${branch}&subject=${subjectName}&section=${sectionName}&semester=${semester}&time=${Date.now()}`;
+        const params = `teacherId=${user.id}&branch=${branch}&subject=${encodeURIComponent(subjectName)}&section=${sectionName}&semester=${semester}&time=${Date.now()}`;
 
         setQr(`${baseUrl}?${params}`);
         setTimeLeft(10);
