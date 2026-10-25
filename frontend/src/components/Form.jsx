@@ -129,10 +129,16 @@ const Form = ({ formType, type }) => {
                     <Link className="logo" to="/">
                         ATTSYS2-0
                     </Link>
-                    <div className="role-badge">
+                    <Link
+                        className="role-badge"
+                        to={formType === 'Log In'
+                            ? (type === 'teacher' ? '/login/student' : '/login/teacher')
+                            : (type === 'teacher' ? '/signup/student' : '/signup/teacher')
+                        }
+                    >
                         <span className="role-icon">{type === 'teacher' ? '👨‍🏫' : '👨‍🎓'}</span>
                         <span className="role-text">{type === 'teacher' ? 'Teacher' : 'Student'}</span>
-                    </div>
+                    </Link>
                 </div>
                 <h1>{formType}</h1>
                 <div className="input-holder">

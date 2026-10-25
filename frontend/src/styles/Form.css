@@ -161,6 +161,16 @@
     font-size: 0.9rem;
     color: #00fff2;
     font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.role-badge:hover {
+    background: rgba(0, 255, 242, 0.2);
+    border-color: rgba(0, 255, 242, 0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 255, 242, 0.2);
 }
 
 .role-icon {

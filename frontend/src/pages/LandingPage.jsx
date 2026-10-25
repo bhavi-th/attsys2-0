@@ -112,7 +112,7 @@ const LandingPage = () => {
                         >
                             Features
                         </a>
-                        <Link className="nav-link nav-cta" to="/login/teacher">
+                        <Link className="nav-link nav-cta" to="/signup/teacher">
                             Get Started
                         </Link>
                     </div>
@@ -121,6 +121,7 @@ const LandingPage = () => {
             </nav>
 
             <div className="hero-section" ref={sectionRefs.hero}>
+                <div className="hero-grid-overlay"></div>
                 <div className="hero-content" style={{
                     transform: `translateY(${scrollY * 0.3}px)`,
                     opacity: Math.max(0, 1 - scrollY / 800)
@@ -134,19 +135,23 @@ const LandingPage = () => {
                         Management
                     </h1>
                     <p className="hero-subtitle">
-                        Eliminate manual tracking errors and save countless hours with our AI-powered,
-                        QR-based attendance system. Designed for modern educational institutions that
-                        demand efficiency, accuracy, and seamless user experience.
+                        Eliminate manual tracking with secure QR-based check-ins. Built for modern institutions who value accuracy, privacy, and efficiency.
                     </p>
                     <div className="hero-actions">
-                        <Link className="landing-link primary" to="/login/teacher">
-                            <span className="btn-icon">👨‍🏫</span>
-                            Teacher Portal
+                        <Link className="landing-link primary" to="/signup/teacher">
+                            Get Started Free
                         </Link>
-                        <Link className="landing-link secondary" to="/login/student">
-                            <span className="btn-icon">👨‍🎓</span>
-                            Student Portal
-                        </Link>
+                        <a href="#features" className="landing-link secondary" onClick={(e) => smoothScroll(e, 'features')}>
+                            Learn More
+                        </a>
+                    </div>
+                    <div className="hero-stats">
+                        {stats.map((stat, index) => (
+                            <div key={index} className="stat-item">
+                                <div className="stat-value">{stat.value}</div>
+                                <div className="stat-label">{stat.label}</div>
+                            </div>
+                        ))}
                     </div>
                     <div className="hero-trust">
                         <div className="trust-item">
@@ -171,51 +176,9 @@ const LandingPage = () => {
                         transform: `translateY(${scrollY * 0.15}px) translateX(${scrollY * -0.05}px)`
                     }}></div>
                     <div className="floating-shape shape-3" style={{
-                        transform: `translateY(${scrollY * 0.08}px) translateX(${scrollY * 0.03}px)`
+                        transform: `translateY(${scrollY * 0.08}px) translateX(${scrollY * -0.03}px)`
                     }}></div>
-                    <div className="hero-card card-1" style={{
-                        transform: `translateY(${scrollY * 0.2}px) rotate(-5deg)`
-                    }}>
-                        <div className="card-header">
-                            <div className="card-dots">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </div>
-                        </div>
-                        <div className="card-body">
-                            <div className="card-line"></div>
-                            <div className="card-line short"></div>
-                            <div className="card-line"></div>
-                            <div className="card-line medium"></div>
-                            <div className="card-qr">
-                                <div className="qr-pattern"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="hero-card card-2" style={{
-                        transform: `translateY(${scrollY * 0.25}px) rotate(3deg)`
-                    }}>
-                        <div className="card-header">
-                            <div className="card-dots">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </div>
-                        </div>
-                        <div className="card-body">
-                            <div className="card-line"></div>
-                            <div className="card-line medium"></div>
-                            <div className="card-stats">
-                                <div className="stat-bar">
-                                    <div className="stat-fill fill-1"></div>
-                                </div>
-                                <div className="stat-bar">
-                                    <div className="stat-fill fill-2"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <div className="hero-glow"></div>
                 </div>
             </div>
 
@@ -462,11 +425,11 @@ const LandingPage = () => {
                         Join thousands of educators and students experiencing the future of attendance management.
                     </p>
                     <div className="cta-actions">
-                        <Link className="landing-link primary" to="/login/teacher">
+                        <Link className="landing-link primary" to="/signup/teacher">
                             <span className="btn-icon">👨‍🏫</span>
                             Get Started as Teacher
                         </Link>
-                        <Link className="landing-link secondary" to="/login/student">
+                        <Link className="landing-link secondary" to="/signup/student">
                             <span className="btn-icon">👨‍🎓</span>
                             Get Started as Student
                         </Link>
