@@ -153,20 +153,6 @@ const LandingPage = () => {
                             </div>
                         ))}
                     </div>
-                    <div className="hero-trust">
-                        <div className="trust-item">
-                            <span className="trust-icon">🔒</span>
-                            <span className="trust-text">Secure & Private</span>
-                        </div>
-                        <div className="trust-item">
-                            <span className="trust-icon">📱</span>
-                            <span className="trust-text">Works Offline</span>
-                        </div>
-                        <div className="trust-item">
-                            <span className="trust-icon">⚡</span>
-                            <span className="trust-text">Lightning Fast</span>
-                        </div>
-                    </div>
                 </div>
                 <div className="hero-visual">
                     <div className="floating-shape shape-1" style={{

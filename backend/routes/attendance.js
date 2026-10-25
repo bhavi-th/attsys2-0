@@ -87,7 +87,7 @@ router.post('/verify', async (req, res) => {
                 branch,
                 semester: semesterNum,
                 status: 'Present',
-                date: new Date(),
+                date: classSession.startedAt,
             });
         } catch (createErr) {
             if (createErr.code === 11000) {
@@ -204,6 +204,13 @@ router.get('/history/:teacherId/:branch/:subject/:section/:semester', async (req
             });
         }
 
+        // Fetch all students in the class (matching the /list endpoint logic)
+        const allStudents = await User.find({
+            role: 'student',
+            section: sectionNum,
+            branch,
+        });
+
         const classSessions = await ClassSession.find({
             teacherId,
             branch,
@@ -228,6 +235,7 @@ router.get('/history/:teacherId/:branch/:subject/:section/:semester', async (req
                 acc[key] = [];
             }
             acc[key].push({
+                studentId: record.studentId.toString(),
                 studentName: record.studentName,
                 usn: record.usn,
                 status: record.status,
@@ -237,27 +245,62 @@ router.get('/history/:teacherId/:branch/:subject/:section/:semester', async (req
         }, {});
 
         const historyArray = classSessions.map((session) => {
-            const records = (recordsBySession[session._id.toString()] || []).sort((a, b) =>
+            const sessionRecords = recordsBySession[session._id.toString()] || [];
+            const presentStudentIds = new Set(sessionRecords.map((r) => r.studentId));
+
+            // Combine all students with their attendance status
+            const combinedRecords = allStudents.map((student) => {
+                const attendanceRecord = sessionRecords.find(
+                    (r) => r.studentId === student._id.toString(),
+                );
+                return {
+                    studentName: student.name || 'N/A',
+                    usn: student.usn || 'N/A',
+                    status: attendanceRecord ? attendanceRecord.status : 'Absent',
+                };
+            });
+
+            // Sort by USN
+            combinedRecords.sort((a, b) =>
                 a.usn.localeCompare(b.usn, undefined, { numeric: true }),
             );
+
             return {
                 date: session.startedAt,
                 sessionId: session._id,
-                records,
-                count: records.length,
+                records: combinedRecords,
+                count: combinedRecords.length,
             };
         });
 
+        // Handle legacy records (without classSessionId)
         Object.entries(recordsBySession)
             .filter(([key]) => key.startsWith('legacy-'))
             .forEach(([key, records]) => {
+                const presentStudentIds = new Set(records.map((r) => r.studentId));
+
+                // Combine all students with their attendance status
+                const combinedRecords = allStudents.map((student) => {
+                    const attendanceRecord = records.find(
+                        (r) => r.studentId === student._id.toString(),
+                    );
+                    return {
+                        studentName: student.name || 'N/A',
+                        usn: student.usn || 'N/A',
+                        status: attendanceRecord ? attendanceRecord.status : 'Absent',
+                    };
+                });
+
+                // Sort by USN
+                combinedRecords.sort((a, b) =>
+                    a.usn.localeCompare(b.usn, undefined, { numeric: true }),
+                );
+
                 historyArray.push({
                     date: key.replace('legacy-', ''),
                     sessionId: null,
-                    records: records.sort((a, b) =>
-                        a.usn.localeCompare(b.usn, undefined, { numeric: true }),
-                    ),
-                    count: records.length,
+                    records: combinedRecords,
+                    count: combinedRecords.length,
                 });
             });
 
